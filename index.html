@@ -3550,11 +3550,22 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
   if (eb) eb.insertAdjacentHTML('beforebegin', '<div class="dx-id">POKÉDEX ENTRY #001 · <span id="dxSt">IDENTIFYING TRAINER…</span></div>');
   const av = $('#avatarContainer');
   if (av) {
-    av.insertAdjacentHTML('beforeend', '<div class="dx-sc" aria-hidden="true"><i class="beam"></i><i class="br"></i><div class="pct" id="dxPct">0%</div></div>');
-    const pct = $('#dxPct'), st = $('#dxSt'); let t0;
-    const done = () => { pct.textContent = 'SCAN COMPLETE'; st.textContent = 'TRAINER PROFILE FOUND'; av.classList.add('dx-scanned'); };
-    const tick = ts => { t0 = t0 || ts; const p = Math.min(1, (ts - t0) / 1500); pct.textContent = Math.round(p * 100) + '%'; p < 1 ? requestAnimationFrame(tick) : done(); };
-    rm ? done() : requestAnimationFrame(tick);
+    av.insertAdjacentHTML('beforeend', '<div class="dx-ball" aria-hidden="true"><i class="bt"></i><i class="bb"></i><i class="bc"></i><i class="bf"></i></div>');
+    const st = $('#dxSt'), T = ms => new Promise(r => setTimeout(r, ms)); let busy = false;
+    av.classList.add('dx-pb'); av.setAttribute('role', 'button'); av.tabIndex = 0; av.title = 'Click to replay'; av.setAttribute('aria-label', 'Replay the Poké Ball opening animation');
+    const play = async () => {
+      if (busy) return; busy = true;
+      if (rm) { av.classList.add('dx-opening'); st.textContent = 'TRAINER PROFILE FOUND'; busy = false; return; }
+      if (av.classList.contains('dx-opening')) { av.classList.remove('dx-opening'); st.textContent = 'RECALLING…'; beep(440); await T(950); }
+      st.textContent = 'IDENTIFYING TRAINER…';
+      av.classList.add('dx-shake'); beep(520); await T(1550);
+      av.classList.remove('dx-shake'); av.classList.add('dx-charge'); await T(450);
+      av.classList.remove('dx-charge'); av.classList.add('dx-opening'); beep(990);
+      await T(900); st.textContent = 'TRAINER PROFILE FOUND'; busy = false;
+    };
+    av.addEventListener('click', play);
+    av.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+    setTimeout(play, 500);
   }
 
   /* placeholder-safe Pokémon asset slots: assets/pokemon/<key>.webp */
@@ -3611,9 +3622,17 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
 
   /* scan transition bars, skill bars, active nav (IntersectionObserver, once) */
   const sbs = new Map();
-  $$('section.section').forEach(s => { const b = document.createElement('div'); b.className = 'dx-sb'; b.setAttribute('aria-hidden', 'true'); b.innerHTML = '<span>SCANNING…</span><i><b></b></i>'; s.prepend(b); sbs.set(s, b); });
+  const mkBar = () => { const b = document.createElement('div'); b.className = 'dx-sb'; b.setAttribute('aria-hidden', 'true'); b.innerHTML = '<span>SCANNING…</span><i><b></b></i>'; return b; };
+  const cardSecs = new Set(['work', 'academic', 'mini']);
+  $$('section.section').forEach(s => {
+    if (cardSecs.has(s.id)) { /* project sections: every card gets its own scan */
+      $$('.project-card', s).forEach(c => { const body = $('.pc-body', c); if (!body) return; const b = mkBar(); b.classList.add('dx-sbc'); body.prepend(b); sbs.set(c, b); const pv = $('.preview', c); if (pv) pv.insertAdjacentHTML('beforeend', '<i class="dx-pscan" aria-hidden="true"></i>'); });
+      return;
+    }
+    const b = mkBar(); s.prepend(b); sbs.set(s, b);
+  });
   /* observe the scan bar itself: a 20%-of-section threshold can never be reached on tall sections */
-  const barObs = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; barObs.unobserve(e.target); const b = e.target; b.classList.add('go'); setTimeout(() => { b.firstChild.textContent = 'ENTRY FOUND'; b.classList.add('done'); beep(520); }, rm ? 0 : 650); }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+  const barObs = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; barObs.unobserve(e.target); const b = e.target; b.classList.add('go'); const pc = b.closest('.project-card'); if (pc && !rm) { pc.classList.add('dx-scanning'); setTimeout(() => pc.classList.remove('dx-scanning'), 1300); } setTimeout(() => { b.firstChild.textContent = 'ENTRY FOUND'; b.classList.add('done'); beep(520); }, rm ? 0 : 650); }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
   sbs.forEach(b => barObs.observe(b));
   const once = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; once.unobserve(e.target); if (e.target.classList.contains('skills')) e.target.classList.add('dx-in'); }), { threshold: .2 });
   $$('.skills').forEach(s => once.observe(s));
@@ -3946,6 +3965,33 @@ html[data-theme=light] .dxb{--sc:var(--cl)}
 html[data-theme=light] .dxb svg{stroke-width:1.7;filter:none;opacity:calc(var(--o)*.75)}
 html[data-theme=light] .dxb[data-l="0"] svg{filter:blur(.4px)}
 @media(prefers-reduced-motion:reduce){.dxb svg{filter:none!important}}
+/* ---- profile Poke Ball + project-card scan ---- */
+.dx .avatar{cursor:pointer;aspect-ratio:1/1!important;height:auto;flex:0 0 auto;border-radius:50%!important}
+.dx-ball{position:absolute;inset:0;z-index:3;border-radius:50%;pointer-events:none;overflow:hidden}
+.dx-ball i{position:absolute;display:block}
+.dx-ball .bt,.dx-ball .bb{left:0;right:0;height:50%;transition:transform .7s cubic-bezier(.65,-.25,.3,1)}
+.dx-ball .bt{top:0;background:radial-gradient(ellipse at 32% 26%,#ff948a 0,#ff3b3b 24%,#d0202a 62%,#a3121c 100%)}
+.dx-ball .bb{bottom:0;background:radial-gradient(ellipse at 40% 80%,#fff 0,#f1f3f7 45%,#c9cfd9 100%)}
+.dx-ball .bt::after,.dx-ball .bb::before{content:"";position:absolute;left:0;right:0;height:9%;background:#15161b}
+.dx-ball .bt::after{bottom:0}.dx-ball .bb::before{top:0}
+.dx-ball .bc{left:50%;top:50%;width:27%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#fff 0 40%,#dfe3ea 41% 100%);border:clamp(3px,.9vw,5px) solid #15161b;box-shadow:0 0 0 clamp(2px,.5vw,3px) #fff;z-index:2;transition:transform .4s,opacity .3s}
+.dx-ball .bf{inset:0;border-radius:50%;background:radial-gradient(circle,#fff 0,rgba(255,255,255,.85) 32%,transparent 72%);opacity:0;z-index:3}
+.dx-shake .dx-ball{animation:dxbshake 1.5s ease-in-out}
+@keyframes dxbshake{0%,50%,100%{transform:rotate(0)}8%{transform:rotate(-13deg)}18%{transform:rotate(13deg)}28%{transform:rotate(-9deg)}38%{transform:rotate(7deg)}58%{transform:rotate(-13deg)}68%{transform:rotate(13deg)}80%{transform:rotate(-6deg)}90%{transform:rotate(4deg)}}
+.dx-charge .dx-ball .bc{animation:dxcharge .22s ease-in-out infinite alternate}
+@keyframes dxcharge{from{box-shadow:0 0 0 3px #fff,0 0 4px 1px #ffd23f}to{box-shadow:0 0 0 3px #fff,0 0 22px 10px #7df9ff}}
+.dx-opening .dx-ball .bt{transform:translateY(-104%)}
+.dx-opening .dx-ball .bb{transform:translateY(104%)}
+.dx-opening .dx-ball .bc{opacity:0;transform:translate(-50%,-50%) scale(1.9)}
+.dx-opening .dx-ball .bf{animation:dxflash .8s ease-out}
+@keyframes dxflash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+.dx .avatar.dx-pb img{opacity:0;transform:scale(.5);filter:brightness(2.4) saturate(.5);transition:opacity .45s .2s,transform .75s .2s cubic-bezier(.2,1.5,.4,1),filter .75s .2s}
+.dx .avatar.dx-pb.dx-opening img{opacity:1;transform:none;filter:none}
+.dx .avatar.dx-pb:focus-visible{outline:2px solid var(--yel);outline-offset:6px}
+.dx-sbc{margin-bottom:12px}
+.dx-pscan{position:absolute;left:0;right:0;top:0;height:3px;z-index:3;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,#4cc9f0,transparent);box-shadow:0 0 14px #4cc9f0}
+.dx-scanning .dx-pscan{animation:dxpscan 1.2s ease-in-out}
+@keyframes dxpscan{0%{top:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{top:calc(100% - 3px);opacity:0}}
 </style>
 <script id="pokedex-v5-js">
 (() => {
