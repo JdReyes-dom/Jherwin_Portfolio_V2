@@ -1793,6 +1793,187 @@ html[data-theme=light] .carousel-card{background:#fff}html[data-theme=light] .ca
 @media(max-width:760px){.dx-radar,.dx-grid{display:none}.dx .hero-inner{transform:none}.dx .hero-photo{transform:none}.dx-pts i:nth-child(n+11){display:none}}
 @media(prefers-reduced-motion:reduce){.dx-bg *,.dx-pbt{animation:none!important}.dx-pts{display:none}.dx .hero-inner,.dx .hero-photo,.dx .hero-text{transform:none!important}}
 </style>
+<style id="pokedex-v3">
+/* ===== POKÉDEX v3: contrast system, varied compositions, shaped panels ===== */
+html[data-theme=dark] body.dx{--text-primary:#f2f6ff;--text-secondary:#cfdaf2;--text-muted:#a9b9d9;--text-inverse:#0b1426;--surface:#0f1a33;--surface-elevated:#172a56;--border:rgba(140,175,255,.28);--red-t:#ff7a5c;--gold-t:#ffd23f;--blue-t:#6db3ff;--ok-t:#7CFC9A;--tc-WEB:#6db3ff;--tc-CODE:#4ade80;--tc-UX:#d3a5ff;--tc-GRAPHICS:#ff8ac4;--tc-3D:#ffa65c;--tc-DESIGN:#4fe0f5;--tc-TOOLS:#b4c2d6}
+html[data-theme=light] body.dx{--text-primary:#0b1426;--text-secondary:#25324d;--text-muted:#46546f;--text-inverse:#ffffff;--surface:#ffffff;--surface-elevated:#f3f6fc;--border:rgba(16,24,40,.22);--red-t:#b8230a;--gold-t:#8a4b00;--blue-t:#1a4fc0;--ok-t:#046c4e;--tc-WEB:#1a5fc0;--tc-CODE:#046c4e;--tc-UX:#7a1fc2;--tc-GRAPHICS:#b3125f;--tc-3D:#b23c06;--tc-DESIGN:#0a6a85;--tc-TOOLS:#3d4a5e}
+html body.dx{--text-dark:var(--text-primary);--text-body:var(--text-secondary);--panel:var(--surface);--panel2:var(--surface-elevated);--line:var(--border);--cut:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px))}
+/* readable labels in both themes */
+.dx .section-title,.dx .subsection-title,.dx .section-title i,.dx .section-title::before{color:var(--red-t)!important}
+.dx .dx-id,.dx .dx-sb,.dx .dx-xp,.dx .dx-comm span,.dx .rail::before,.dx .dx-type,.dx-mon small{color:var(--gold-t)}
+.dx .dx-id2,.dx .dx-route{color:var(--blue-t)}
+.dx .rail a{color:var(--text-secondary)!important}.dx .rail a b,.dx .dx-info dt,.dx .internship-list li::before{color:var(--red-t)}
+.dx .rail a.on,.dx .rail a.on b{color:#fff!important}
+.dx .dx-comm em{color:var(--text-primary)}.dx .dx-comm b{color:var(--ok-t)}
+.dx .dx-type{color:var(--tc,var(--gold-t))!important}
+.dx [data-t]{--tc:var(--tc-WEB)}
+.dx [data-t=CODE]{--tc:var(--tc-CODE)}.dx [data-t=UX]{--tc:var(--tc-UX)}.dx [data-t=GRAPHICS]{--tc:var(--tc-GRAPHICS)}.dx [data-t=3D]{--tc:var(--tc-3D)}.dx [data-t=DESIGN]{--tc:var(--tc-DESIGN)}.dx [data-t=TOOLS]{--tc:var(--tc-TOOLS)}
+.dx .skills li .dx-type{border-color:currentColor}
+.dx .hero-intro,.dx .info-block p,.dx .story-lead p,.dx .section-subtitle,.dx .list_text{color:var(--text-secondary)}
+.dx .info-block h3,.dx .list_text,.dx .social-card .label{color:var(--text-primary)}
+.dx .info-block .edu-meta,.dx .social-card .handle-tag,.dx .hero-role,.dx .footer-note{color:var(--text-muted)}
+.dx .internship-list .list_text strong,.dx .skills li strong{color:var(--blue-t)}
+.dx .dx-info p{color:var(--text-secondary)}
+.dx .tag{color:var(--text-secondary)}
+/* hairline separators between screens */
+.dx .section::after{content:"";position:absolute;left:0;right:0;bottom:-4.5rem;height:1px;background:linear-gradient(90deg,var(--red-t),var(--blue-t),transparent);opacity:.6}
+.dx-bg::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:.35;animation:dxsweep 11s linear infinite}
+@keyframes dxsweep{to{transform:translateY(100vh)}}
+/* hero: encounter screen */
+.dx .hero-inner{padding:3rem 0 4rem}
+.dx-chip{position:absolute;z-index:3;font:700 11px var(--mono);letter-spacing:.12em;padding:6px 12px;background:var(--surface-elevated);color:var(--text-primary);border:1px solid var(--border);border-left:3px solid var(--red-t);clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);box-shadow:0 8px 20px #0006;transform:translateZ(70px)}
+.dx-chip.a{left:-70px;top:12%}.dx-chip.b{right:-60px;top:48%}.dx-chip.c{left:-30px;bottom:6%}
+.dx-explore{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;font:700 13px var(--mono);letter-spacing:.14em;text-decoration:none;color:var(--text-inverse);background:var(--red);padding:12px 20px 12px 14px;border-radius:40px 8px 40px 8px;border-bottom:4px solid #7a1604;transition:transform .1s,filter .2s}
+.dx-explore{color:#fff}.dx-explore:hover{filter:brightness(1.1)}.dx-explore:active{transform:translateY(3px);border-bottom-width:1px}
+.dx-explore .pb{width:22px;height:22px}
+/* about: trainer profile, asymmetric modules */
+.dx .about-grid{grid-template-columns:5fr 6fr!important;gap:0!important;align-items:start}
+.dx .about-col{background:var(--surface);border:1px solid var(--border);padding:1.6rem 1.8rem;clip-path:var(--cut);box-shadow:inset 0 0 0 1px var(--border)}
+.dx .about-col.education{margin:2.6rem 0 0 -2.2rem;background:var(--surface-elevated);z-index:2;border-top:4px solid var(--red-t)}
+.dx .about-col.personal{border-left:4px solid var(--blue-t)}
+.dx .about-col::after{content:attr(data-lab);position:absolute;right:10px;top:34px;writing-mode:vertical-rl;font:700 10px var(--mono);letter-spacing:.3em;color:var(--text-muted)}
+.dx .info-block:hover{translate:0 -4px;box-shadow:0 18px 30px -12px #0008}
+/* skills: featured ability + staggered, clipped modules */
+.dx .skills ul{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;align-items:start}
+.dx .skills li{clip-path:var(--cut);border-radius:0;padding:14px 16px 14px 14px}
+.dx .skills li:first-child{grid-column:span 2;grid-row:span 2;padding:24px 22px;font-size:1.15rem;align-content:center;min-height:170px}
+.dx .skills li:first-child .skill-icon{width:44px;height:44px;font-size:1.2rem}
+.dx .skills li:nth-child(4n+3){margin-top:16px}.dx .skills li:nth-child(4n){margin-top:-8px}
+.dx .skills li{display:grid!important;grid-template-columns:auto 1fr!important}
+.dx .skills li .dx-type{grid-column:1/-1;grid-row:3;justify-self:start}.dx .skills li .dx-bar{grid-column:1/-1;grid-row:2}
+.dx .skills li>span:nth-child(2){color:var(--text-primary);grid-column:2}
+/* journey: staggered route */
+.dx .internship-list li:nth-child(even){margin-left:2.4rem}
+.dx .internship-list li .list_text{background:var(--surface);border:1px solid var(--border);padding:12px 16px;clip-path:polygon(0 0,100% 0,100% 70%,calc(100% - 16px) 100%,0 100%)}
+/* project entries: varied compositions */
+.dx .dex{background:var(--surface);border:1px solid var(--border);clip-path:var(--cut);border-radius:0}
+.dx .dx-tools::before{content:"ABILITIES";width:100%;font:700 10px var(--mono);letter-spacing:.24em;color:var(--red-t)}
+.dx .dex--rev{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}.dx .dex--rev .dx-info{order:-1}
+.dx .dex--over{grid-template-columns:1fr}.dx .dex--over .dx-view{aspect-ratio:21/9}
+.dx .dex--over .dx-info{position:relative;z-index:2;margin:-56px 5% 0 32%;clip-path:var(--cut);border:1px solid var(--border);box-shadow:0 -10px 30px #0006}
+.dx .dex--over .dx-strip{margin-top:12px}
+/* photodex */
+.dx .photo-card .photo-info{background:var(--surface-elevated);border:1px solid var(--border);padding:1.2rem 1.4rem;margin-left:-3.5rem;position:relative;z-index:2;clip-path:var(--cut)}
+.dx .photo-card .photo-info p{color:var(--text-secondary)}.dx .photo-card .photo-info h5{color:var(--text-primary)}
+.dx .photo-img{cursor:zoom-in}
+.dx-pts2{display:flex;gap:8px;overflow-x:auto;padding:14px 4px;margin:0;list-style:none}
+.dx-pts2 button{position:relative;width:86px;height:56px;padding:0;border:2px solid var(--border);overflow:hidden;background:#000;cursor:pointer;opacity:.65;clip-path:polygon(0 0,100% 0,100% 80%,86% 100%,0 100%);transition:opacity .2s,transform .2s}
+.dx-pts2 button img{width:100%;height:100%;object-fit:cover}.dx-pts2 button span{position:absolute;left:4px;top:2px;font:700 9px var(--mono);color:#fff;text-shadow:0 1px 3px #000}
+.dx-pts2 button[aria-current=true]{opacity:1;border-color:var(--red);transform:translateY(-3px)}
+/* comms terminal */
+.dx .contact-card{clip-path:var(--cut);border:1px solid var(--border);padding:3.4rem 2.2rem 2rem;background:var(--surface)}
+.dx .contact-card::before{content:"COMMUNICATION CENTER ▪ SIGNAL ▮▮▮ ▪ STATUS: ONLINE";height:auto;top:0;padding:8px 14px;background:var(--red);color:#fff;font:700 10px var(--mono);letter-spacing:.18em}
+.dx .contact-card p{color:var(--text-secondary)}.dx .contact-card h3{font-family:'Rajdhani',sans-serif}
+.dx .social-card{background:var(--surface);margin-top:8px;padding:.9rem 1rem!important;border:1px solid var(--border);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 100%,0 100%)}
+.dx .social-card:nth-child(2){margin-left:2rem}.dx .social-card:nth-child(3){margin-left:4rem}
+/* theme toggle = Poké Ball switch */
+.dx-th{padding:3px 12px 3px 4px!important;background:#0006!important;transition:transform .12s}.dx-th:active{transform:scale(.93)}
+.dx-th b{font-size:0!important;position:relative;width:22px;height:22px;border-radius:50%;border:2px solid #111;background:linear-gradient(#e3350d 0 44%,#111 44% 56%,#f5f5f5 56%);box-shadow:0 2px 4px #0008;transition:transform .5s var(--ease-out)!important}
+.dx-th b::after{position:absolute;left:50%;top:50%;width:11px;height:11px;margin:-5.5px;border-radius:50%;background:#fff;border:1.5px solid #111;color:#111;font-size:8px;line-height:8px;text-align:center;content:"☾"}
+.dx-th[aria-pressed=true] b::after{content:"☀"}
+/* nav ball */
+.dx-hud .lens{cursor:pointer;padding:0}.dx-navoff .rail{display:none!important}
+/* mobile */
+@media(max-width:900px){
+ .dx .about-grid{grid-template-columns:1fr!important}.dx .about-col.education{margin:-8px 0 0 12px}
+ .dx .skills ul{grid-template-columns:1fr 1fr!important}.dx .skills li:first-child{grid-column:1/-1}
+ .dx .skills li:nth-child(n){margin-top:0}.dx .dex--over .dx-info{margin:-30px 3% 0 3%}
+ .dx .photo-card .photo-info{margin:-30px 4% 0}.dx-chip{display:none}
+ .dx .social-card:nth-child(n){margin-left:0}.dx .dex--rev .dx-info{order:0}
+}
+@media(max-width:560px){.dx .skills ul{grid-template-columns:1fr!important}.dx .internship-list li:nth-child(even){margin-left:0}}
+@media(prefers-reduced-motion:reduce){.dx-bg::after{display:none}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@500;600;700;800&family=Silkscreen&display=swap" rel="stylesheet">
+<style id="pokedex-v4">
+/* ===== POKÉDEX v4: no-overlap layout, type system, entry collection, in-flow companions ===== */
+html[data-theme=dark] body.dx{--surface-soft:#0c1630}
+html[data-theme=light] body.dx{--surface-soft:#e8eefa}
+html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silkscreen','Nunito',monospace;--body:'Nunito','Segoe UI',system-ui,sans-serif;font-family:var(--body)}
+.dx [data-t=GAME]{--tc:var(--tc-UX)}
+/* typography: display / UI / body */
+.dx h1,.dx h2,.dx h3,.dx h4,.dx .hero-name,.dx .company,.dx .social-card .label,.dx .subsection-title{font-family:var(--display)!important;font-weight:400!important;letter-spacing:.01em!important;text-transform:none}
+.dx .hero-name{text-transform:uppercase;font-size:clamp(2.6rem,6.2vw,4.8rem);line-height:1.02}
+.dx .section-title{font-family:var(--display)!important;text-transform:none!important;letter-spacing:.01em!important;font-size:clamp(2rem,5vw,3.1rem)!important;margin-bottom:1rem;flex-wrap:wrap}
+.dx .section-title::before{font-family:var(--mono)!important;font-size:.8rem}
+.dx .subsection-title{font-size:clamp(1.3rem,3vw,1.8rem)!important;margin-bottom:.8rem}
+.dx .section-subtitle{margin-bottom:1.6rem;max-width:62ch;font-size:1.05rem;line-height:1.65}
+.dx .hero-intro,.dx .info-block p,.dx .list_text,.dx .story-lead p{font-family:var(--body);font-size:1.05rem;line-height:1.65}
+.dx .dx-type,.dx .dx-sb,.dx .dx-xp,.dx .dx-id,.dx .dx-id2,.dx .dx-route,.dx .dx-comm{font-size:12px}
+.dx .dx-info dd,.dx .dx-comm em{font-family:var(--body);font-weight:700}
+/* remove every overlap source from earlier layers */
+.dx .dx-mon,.dx .dx-chip,.dx .dex,.dx .about-col::after,.dx .hero::before,.dx .hero::after{display:none!important}
+.dx .hero-inner,.dx .hero-photo,.dx .hero-text{transform:none!important}
+.dx .hero-inner{padding:2rem 0 3rem}
+.dx .hero-photo{width:clamp(200px,22vw,260px);display:flex;flex-direction:column;gap:14px}
+.dx .about-col.education{margin:0}
+.dx .info-block:hover{translate:0 -3px}
+.dx .skills li:nth-child(n){margin-top:0}
+.dx .internship-list li:nth-child(n){margin-left:0}
+.dx .internship-list li::before{position:static!important;display:block;width:auto!important;height:auto!important;background:none!important;margin:0 0 6px}
+.dx .internship-list li{padding-bottom:2rem}
+.dx .photo-card .photo-info{margin:0}
+.dx .social-card:nth-child(n){margin-left:0}
+.dx .habit-block~.habit-block{margin-top:6rem}
+.dx .page{overflow-x:clip}
+/* hero readout */
+.dx-readout{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--red-t)}
+.dx-readout dt{font:12px var(--mono);letter-spacing:.12em;color:var(--red-t)}.dx-readout dd{margin:0;font-weight:800;font-size:.9rem;color:var(--text-primary)}
+/* about: trainer profile areas */
+.dx .about-grid{grid-template-columns:repeat(12,minmax(0,1fr))!important;gap:1.5rem!important}
+.dx .about-bio{grid-column:1/-1;padding:.2rem 0 .2rem 1.4rem;border-left:4px solid var(--red-t)}
+.dx .about-bio small,.dx .dx-focus small{display:block;font:12px var(--mono);letter-spacing:.2em;color:var(--red-t);margin-bottom:6px}
+.dx .about-bio p{max-width:66ch;font-size:1.2rem;line-height:1.7;color:var(--text-primary)}
+.dx .about-col.personal{grid-column:span 5}.dx .about-col.education{grid-column:span 7}
+.dx .dx-focus{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:.4rem 2rem;align-items:center;background:var(--surface-soft)}
+.dx .dx-focus h3{margin:0;padding:0;border:0}
+.dx .dx-focus p{margin:0}
+/* companions: always in-flow, never over text */
+.dx-pal{display:flex;align-items:center;gap:12px;margin:0;padding:8px 16px 8px 8px;background:var(--surface-soft);border:1px solid var(--border);border-radius:40px 10px 40px 10px;width:fit-content;max-width:100%}
+.dx-pbox{position:relative;flex:none;width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:var(--surface);border:2px solid var(--border)}
+.dx-pbox .pb{width:24px;height:24px;opacity:.4}.dx-pbox.has .pb{display:none}
+.dx-pbox img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);object-fit:contain;filter:drop-shadow(0 4px 6px #0006);animation:dxfloat 4s ease-in-out infinite}
+.dx-pbox[data-m=pikachu]{box-shadow:0 0 14px #ffd23f66}.dx-pbox[data-m=charmander]{box-shadow:0 0 14px #ff7a3c55}.dx-pbox[data-m=squirtle]{box-shadow:0 0 14px #4fa8ff55}.dx-pbox[data-m=bulbasaur]{box-shadow:0 0 14px #4ade8055}
+.dx-pal figcaption{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dx-pal figcaption b{font:12px var(--mono);letter-spacing:.14em;color:var(--red-t)}.dx-pal figcaption span{font-weight:800;color:var(--text-primary)}
+.dx-pals{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 1.8rem}
+.dx-pal--sec{margin:0 0 2.2rem}
+.dx .story-lead .dx-pal{margin-top:1.2rem}
+.dx .contact-card .dx-pal{margin-top:.4rem}
+/* entry collection */
+.ent-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2.4rem 1.6rem;margin-top:1.2rem;align-items:stretch}
+.ent{grid-column:span 6;display:flex;flex-direction:column;min-width:0;background:var(--surface);border:1px solid var(--border);clip-path:var(--cut);transition:translate .25s,box-shadow .25s}
+.ent:hover{translate:0 -4px;box-shadow:0 16px 30px -14px #000a}
+.ent-fig{margin:0;aspect-ratio:16/10;overflow:hidden;background:#06141a;border-bottom:3px solid var(--red);cursor:pointer}
+.ent-fig img,.ent-fig video{width:100%;height:100%;object-fit:cover;display:block;transition:scale .5s}
+.ent:hover .ent-fig img{scale:1.04}
+.ent-body{padding:1.4rem 1.6rem 1.7rem;display:flex;flex-direction:column;align-items:flex-start;gap:.85rem;flex:1;min-width:0}
+.ent-meta{display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center;font:12px var(--mono);letter-spacing:.1em;color:var(--text-secondary)}
+.ent-meta .no{color:var(--red-t)}.ent-meta .ty{color:var(--tc,var(--blue-t));border:1px solid currentColor;padding:2px 10px;border-radius:20px}
+.ent h4{font-size:clamp(1.35rem,2.4vw,1.85rem)!important;line-height:1.15;color:var(--text-primary)}
+.ent .lead{margin:0;font-weight:700;font-size:.95rem;color:var(--text-secondary)}
+.ent .d{margin:0;max-width:62ch;font-size:1rem;line-height:1.65;color:var(--text-primary)}
+.ent-ab{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ent-ab b{font:12px var(--mono);letter-spacing:.14em;color:var(--red-t);margin-right:4px}
+.ent-ab span{font-weight:700;font-size:.82rem;padding:3px 10px;background:var(--surface-soft);border:1px solid var(--border);border-radius:20px;color:var(--text-primary)}
+.ent .dx-open{margin-top:auto;align-self:flex-start}
+.ent--feat,.ent--featr,.ent--wide,.ent--off{display:grid;align-items:stretch}
+.ent--feat,.ent--featr,.ent--wide{grid-column:1/-1}
+.ent--feat{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.ent--featr{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}
+.ent--wide{grid-template-columns:minmax(0,.75fr) minmax(0,1.6fr)}
+.ent--off{grid-column:3/-1;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.ent--feat .ent-fig,.ent--featr .ent-fig,.ent--wide .ent-fig,.ent--off .ent-fig{aspect-ratio:auto;min-height:240px;border-bottom:0;border-right:3px solid var(--red)}
+.ent--featr .ent-fig{order:2;border-right:0;border-left:3px solid var(--red)}
+.ent--wide .ent-fig{min-height:180px}
+@media(max-width:900px){
+ .dx .hero-photo{width:min(260px,70%);margin:0 auto}
+ .dx .about-col.personal,.dx .about-col.education{grid-column:1/-1}.dx .dx-focus{grid-template-columns:1fr}
+ .ent,.ent--feat,.ent--featr,.ent--wide,.ent--off{grid-column:1/-1;display:flex}
+ .ent--feat .ent-fig,.ent--featr .ent-fig,.ent--wide .ent-fig,.ent--off .ent-fig{aspect-ratio:16/10;min-height:0;border:0;border-bottom:3px solid var(--red);order:0}
+ .dx .photo-card{row-gap:1.4rem}
+}
+@media(max-width:560px){.dx-pal{width:100%}.ent-body{padding:1.1rem 1.1rem 1.3rem}.dx .section-title{font-size:clamp(1.7rem,8vw,2.2rem)!important}}
+</style>
 </head>
 <body>
 
@@ -3522,6 +3703,117 @@ html[data-theme=light] .carousel-card{background:#fff}html[data-theme=light] .ca
   /* entry-screen label on the existing gallery modal */
   const og = window.openGallery;
   if (typeof og === 'function') window.openGallery = function () { og.apply(this, arguments); const e = $('#modalEyebrow'); if (e && !/^POKÉDEX/.test(e.textContent)) e.textContent = 'POKÉDEX ENTRY · ' + e.textContent; };
+})();
+</script>
+<script id="pokedex-v3-js">
+/* ===== POKÉDEX v3 ===== */
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* hero: encounter modules + explore button (text from existing content) */
+  const hp = $('#intro .hero-photo');
+  if (hp) hp.insertAdjacentHTML('beforeend', '<span class="dx-chip a">TYPE: DESIGNER / DEVELOPER</span><span class="dx-chip b">STATUS: ONLINE</span><span class="dx-chip c">OJT · CLOUDSWYFT</span>');
+  const badge = $('#intro .hero-badge');
+  if (badge) badge.insertAdjacentHTML('afterend', '<a class="dx-explore" href="#about"><i class="pb" aria-hidden="true"></i>EXPLORE ENTRY</a>');
+  const ex = $('.dx-explore'); if (ex) ex.addEventListener('click', e => { e.preventDefault(); const l = $('.rail a[href="#about"]'); if (l) l.click(); });
+
+  /* trainer profile modules */
+  const pe = $('.about-col.personal'), ed = $('.about-col.education');
+  if (pe) pe.dataset.lab = 'IDENTITY'; if (ed) ed.dataset.lab = 'RECORD';
+  $$('.about-col').forEach(c => { c.setAttribute('data-tilt', '2.5'); c.setAttribute('data-spotlight', ''); });
+
+  /* different composition per project screen */
+  const v = { academic: 'dex--rev', mini: 'dex--over' };
+  Object.entries(v).forEach(([id, cls]) => { const d = $(`#${id} .dex`); if (d) d.classList.add(cls); });
+
+  /* Photodex: entry strip + fullscreen viewer */
+  const track = $('#photoTrack');
+  if (track && typeof PHOTO_DATA !== 'undefined') {
+    const car = $('.photo-carousel');
+    car.insertAdjacentHTML('afterend', `<ul class="dx-pts2" aria-label="Photodex entries">${PHOTO_DATA.map((p, i) => `<li><button type="button" data-i="${i}" aria-label="Photo ${i + 1}: ${p.title.replace(/"/g, '')}"><span>${String(i + 1).padStart(3, '0')}</span><img src="${p.image}" alt="" loading="lazy"></button></li>`).join('')}</ul>`);
+    const strip = $('.dx-pts2');
+    const sync = () => $$('button', strip).forEach((b, i) => b.setAttribute('aria-current', i === photoIndex));
+    strip.addEventListener('click', e => { const b = e.target.closest('button'); if (b) photoGoTo(+b.dataset.i); });
+    const pg = window.photoGoTo; window.photoGoTo = function () { pg.apply(this, arguments); sync(); };
+    track.addEventListener('click', e => { const im = e.target.closest('.photo-img img'); if (im) openLightbox(im.getAttribute('src'), im.alt); });
+    sync();
+  }
+
+  /* Poké Ball in the HUD collapses / restores the navigation */
+  const lens = $('.dx-hud .lens');
+  if (lens) { lens.setAttribute('role', 'button'); lens.tabIndex = 0; lens.setAttribute('aria-label', 'Toggle navigation'); lens.setAttribute('aria-expanded', 'true');
+    const t = () => { const off = document.body.classList.toggle('dx-navoff'); lens.setAttribute('aria-expanded', !off); };
+    lens.addEventListener('click', t); lens.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } }); }
+
+  /* communication: poké-ball send button using the existing email link */
+  const cc = $('.contact-card');
+  if (cc) cc.insertAdjacentHTML('beforeend', '<a class="dx-explore" href="mailto:reyesjherwin14@gmail.com"><i class="pb" aria-hidden="true"></i>OPEN CHANNEL · EMAIL</a>');
+})();
+</script>
+<script id="pokedex-v4-js">
+/* ===== POKÉDEX v4 ===== */
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  $$('.dx-mon,.dx-chip').forEach(e => e.remove());
+
+  /* companions live in their own in-flow panel; art is optional: assets/pokemon/<name>.webp */
+  const pal = (m, role, cls = '') => `<figure class="dx-pal ${cls}"><span class="dx-pbox" data-m="${m}"><i class="pb" aria-hidden="true"></i><img src="assets/pokemon/${m}.webp" alt="" loading="lazy"></span><figcaption><b>${role}</b><span>${m[0].toUpperCase() + m.slice(1)}</span></figcaption></figure>`;
+  const wire = r => $$('.dx-pbox img', r).forEach(i => { i.addEventListener('load', () => i.parentElement.classList.add('has')); i.addEventListener('error', () => i.remove()); });
+  const put = (el, where, html) => { if (!el) return; el.insertAdjacentHTML(where, html); wire(el.parentElement || el); };
+
+  /* hero: identification readout + companion under the portrait (own column, no overlap) */
+  const hp = $('#intro .hero-photo');
+  if (hp) put(hp, 'beforeend', `<dl class="dx-readout"><dt>TYPE</dt><dd>Designer / Developer</dd><dt>STATUS</dt><dd>Online</dd></dl>${pal('pikachu', 'COMPANION')}`);
+
+  /* about: trainer profile areas (copy comes from existing sections) */
+  const grid = $('.about-grid');
+  if (grid) {
+    const bio = ($('#intro .hero-intro') || {}).textContent;
+    const role = ($('.internship-list .list_text') || {}).textContent || '';
+    const focus = ($$('.internship-list .list_text')[3] || {}).textContent || '';
+    grid.insertAdjacentHTML('afterbegin', `<div class="about-bio"><small>TRAINER INFORMATION</small><p>${esc((bio || '').trim().replace(/\s+/g, ' '))}</p></div>`);
+    grid.insertAdjacentHTML('beforeend', `<div class="about-col dx-focus"><div><small>CURRENT SPECIALIZATION</small><h3>CloudSwyft · LDX Intern</h3></div><div><p>${esc(role.replace('Role:', '').trim())}</p><p>${esc(focus.replace('Focus:', '').trim())}</p></div></div>`);
+    put(grid, 'afterend', pal('eevee', 'COMPANION', 'dx-pal--sec'));
+  }
+
+  /* skills: type companions in a legend row, above the ability list */
+  const sk = $('.skills h3');
+  if (sk) put(sk, 'afterend', `<div class="dx-pals">${pal('charmander', '3D · GAME')}${pal('squirtle', 'WEB')}${pal('bulbasaur', 'CODE')}${pal('psyduck', 'DESIGN')}</div>`);
+
+  /* journey: companion in the lead column, below the text */
+  const xp = $('.dx-xp'); if (xp) put(xp, 'afterend', pal('charmander', 'TRAVELING COMPANION'));
+
+  /* section companions: placed after the subtitle, before content */
+  [['work', 'lucario'], ['academic', 'bulbasaur'], ['mini', 'ditto'], ['habits', 'snorlax'], ['connect', 'pikachu']].forEach(([id, m]) => {
+    const t = $(`#${id} > .section-subtitle`);
+    if (!t) return;
+    if (id === 'connect') { const cc = $('.contact-card'); if (cc) put(cc, 'beforeend', pal(m, 'COMPANION')); }
+    else put(t, 'afterend', pal(m, 'ENTRY COMPANION', 'dx-pal--sec'));
+  });
+
+  /* projects → varied Pokédex entry collection built from the existing cards */
+  let n = 1;
+  const pat = ['feat', 'half', 'half', 'wide', 'off', 'featr'];
+  const typeOf = t => /Unity/i.test(t) ? 'GAME' : /Blender|3D/i.test(t) ? '3D' : /HTML|PHP|Website|Firebase|JavaScript/i.test(t) ? 'WEB' : 'DESIGN';
+  const make = (host, cards) => {
+    if (!cards.length) return;
+    const par = cards[0].parentElement, isBlock = par.classList.contains('habit-block');
+    const html = cards.map((c, i) => {
+      const k = (c.getAttribute('onclick').match(/'([^']+)'/) || [])[1], im = $('img', c), vd = $('video', c);
+      const name = $('h4', c).textContent.trim(), tags = $$('.tag', c).map(t => t.textContent.trim());
+      const date = (($('.pc-date', c) || {}).textContent || '').trim(), sup = (($('.pc-supervisor', c) || {}).textContent || '').trim();
+      const media = vd ? `<video src="${esc(vd.getAttribute('src'))}" muted playsinline preload="metadata" aria-label="${esc(vd.getAttribute('aria-label'))}"></video>` : im ? `<img src="${esc(im.getAttribute('src'))}" alt="${esc(im.alt)}" loading="lazy" decoding="async">` : '';
+      const ty = typeOf(tags.join(' '));
+      return `<article class="ent ent--${pat[i % pat.length]}" data-t="${ty}" data-k="${esc(k)}"><figure class="ent-fig">${media}</figure><div class="ent-body"><div class="ent-meta"><span class="no">NO. ${String(++n).padStart(3, '0')}</span><span class="ty">${ty}</span>${date ? `<span>${esc(date)}</span>` : ''}</div><h4>${esc(name)}</h4>${sup ? `<p class="lead">${esc(sup)}</p>` : ''}<p class="d">${esc(($('.para', c) || {}).textContent.trim().replace(/\s+/g, ' '))}</p><div class="ent-ab"><b>ABILITIES</b>${tags.map(t => `<span>${esc(t)}</span>`).join('')}</div><button type="button" class="dx-btn dx-open" aria-label="Open entry: ${esc(name)}">OPEN ENTRY ▸</button></div></article>`;
+    }).join('');
+    const g = document.createElement('div'); g.className = 'ent-grid'; g.innerHTML = html;
+    if (isBlock) { par.classList.remove('dx-src'); cards.forEach(c => c.classList.add('dx-src')); par.append(g); }
+    else { par.classList.add('dx-src'); par.after(g); }
+    g.addEventListener('click', e => { const a = e.target.closest('.ent'); if (a && (e.target.closest('.dx-open') || e.target.closest('.ent-fig'))) openGallery(a.dataset.k); });
+  };
+  ['work', 'academic', 'mini'].forEach(id => { const s = $('#' + id); if (s) make(s, $$('.project-card', s)); });
+  $$('#habits .habit-block').forEach(b => make(b, $$('.project-card', b)));
 })();
 </script>
 </body>
