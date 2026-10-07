@@ -961,14 +961,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      overflow: hidden;
+      padding: calc(env(safe-area-inset-top, 0px) + clamp(3.75rem, 9dvh, 5rem)) clamp(0.75rem, 3vw, 1.5rem) calc(env(safe-area-inset-bottom, 0px) + clamp(1.25rem, 5dvh, 3rem));
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
     .modal-backdrop.open { opacity: 1; visibility: visible; }
     .modal-close {
-      position: absolute;
-      top: 20px; right: 20px;
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + 14px); right: max(14px, env(safe-area-inset-right, 0px));
       width: 48px; height: 48px;
       border-radius: 50%;
       background: rgba(15, 23, 42, 0.95);
@@ -993,12 +993,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       width: 100%;
+      min-width: 0;
       max-width: 1000px;
-      max-height: 100%;
+      margin-block: auto;
       gap: 1rem;
-      padding-top: 3rem;
     }
     .modal-header {
       text-align: center;
@@ -1510,17 +1510,10 @@
       .pc-icon svg { width: 20px; height: 20px; }
       .project-card .para { font-size: 0.9rem; }
 
-      .modal-backdrop { padding: 0.5rem; }
-      .modal-inner { padding-top: 3.5rem; gap: 0.75rem; }
-      .modal-close { top: 12px; right: 12px; width: 42px; height: 42px; }
+      .modal-close { width: 44px; height: 44px; }
       .modal-header { margin-bottom: 0.5rem; }
       .modal-header h2 { font-size: 1.4rem; }
       .modal-header p { font-size: 0.88rem; }
-      .carousel-slide { flex: 0 0 88%; padding: 0 0.4rem; opacity: 0.25; transform: scale(0.95); }
-      .carousel-slide.active { opacity: 1; transform: scale(1); }
-      .carousel-btn { width: 38px; height: 38px; font-size: 0.85rem; }
-      .carousel-btn.prev { left: 0; }
-      .carousel-btn.next { right: 0; }
       .carousel-card .window-text { padding: 1rem 1.1rem 1.2rem; }
       .carousel-card .window-text h5 { font-size: 0.95rem; }
       .carousel-card .window-text p { font-size: 0.82rem; }
@@ -1546,8 +1539,6 @@
       .hero-photo { width: min(160px, 55%); }
 
       .contact-card { padding: 1.4rem; }
-      .carousel-slide { flex: 0 0 92%; }
-      .carousel-btn { width: 34px; height: 34px; font-size: 0.75rem; }
       .social-card { padding: 0.85rem 0.25rem; }
       .social-card .label { font-size: 1.05rem; }
       .social-card .handle-tag { font-size: 0.72rem; }
@@ -1599,8 +1590,8 @@ body.dx{--red:#e3350d;--red2:#ff5a3c;--yel:#ffd23f;--ink:#0d0f14;--panel:#161a22
 .dx-hud button:active,.dx-btn:active{transform:translateY(2px)}
 @keyframes dxflick{0%,92%,96%{opacity:1}94%{opacity:.4}}
 /* NAV */
-.dx .rail{position:fixed!important;left:auto!important;right:14px!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)!important;width:152px;z-index:94;display:flex!important;flex-direction:column;gap:2px;padding:10px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:6px 14px 6px 14px;box-shadow:0 8px 30px #0008}
-.dx .rail::before{content:"POKÉDEX 001";font:600 10px var(--mono);letter-spacing:.2em;color:var(--yel);padding:2px 6px 8px}
+.dx .rail{position:fixed!important;left:auto!important;right:14px!important;top:50%!important;bottom:auto!important;translate:none!important;transform:translateY(-50%)!important;width:152px;max-height:calc(100dvh - 40px - 28px);z-index:94;display:flex!important;flex-direction:column;gap:2px;padding:10px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:6px 14px 6px 14px;box-shadow:0 8px 30px #0008}
+.dx .rail::before{content:"POKÉDEX 001";position:static;display:block;flex:none;width:auto;height:auto;background:none;font:600 10px var(--mono);letter-spacing:.2em;color:var(--yel);padding:2px 6px 8px}
 .dx .rail a{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:4px;color:#9aa4b2!important;font:600 12px var(--mono);text-transform:uppercase;text-decoration:none;transition:background .2s,transform .2s,color .2s}
 .dx .rail a b{color:var(--red2)}.dx .rail a:hover{background:#ffffff0d;transform:translateX(-3px)}
 .dx .rail a.on{background:var(--red);color:#fff!important}.dx .rail a.on b{color:var(--yel)}
@@ -1678,11 +1669,6 @@ body.dx{--red:#e3350d;--red2:#ff5a3c;--yel:#ffd23f;--ink:#0d0f14;--panel:#161a22
 .dx-comm b{color:#7CFC9A}.dx-comm em{font-style:normal;color:#fff;margin-left:auto}
 .dx .social-card{border-radius:8px!important}.dx .social-card:hover{border-color:var(--red2)!important}
 /* mobile handheld */
-@media(max-width:1099px){
- .dx .rail{top:auto!important;bottom:0!important;right:0!important;left:0!important;transform:none!important;width:auto;flex-direction:row;overflow-x:auto;border-radius:14px 14px 0 0;border-left:0;border-top:4px solid var(--red);padding:6px;gap:4px}
- .dx .rail::before{display:none}.dx .rail a{flex:0 0 auto;padding:10px 10px}.dx .rail a:hover{transform:none}
- .dx .page{padding-bottom:84px}
-}
 @media(max-width:760px){
  .dex{grid-template-columns:1fr;border-radius:10px 10px 22px 22px}
  .dx-hud{gap:8px;font-size:10px}.dx-hud .hide-sm{display:none}
@@ -1738,7 +1724,7 @@ html[data-theme=light] .carousel-card{background:#fff}html[data-theme=light] .ca
 .dx .rail a:hover .pb{transform:rotate(360deg)}
 .dx .rail a.on .pb{animation:dxpulse 1.6s ease-in-out infinite}
 @keyframes dxpulse{50%{box-shadow:0 0 0 4px rgba(255,210,63,.35),0 0 12px var(--yel)}}
-.dx .rail{overflow:hidden}
+.dx .rail{overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
 .dx .rail::after{content:"";position:absolute;left:0;top:0;width:4px;height:calc(var(--p,0)*100%);background:var(--yel);transition:height .2s}
 .dx .rail a span{opacity:1!important;translate:none!important}
 /* Poké Ball opening transition */
@@ -3815,6 +3801,153 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
   ['work', 'academic', 'mini'].forEach(id => { const s = $('#' + id); if (s) make(s, $$('.project-card', s)); });
   $$('#habits .habit-block').forEach(b => make(b, $$('.project-card', b)));
 })();
+</script>
+<style id="pokedex-v5">
+/* ===== v5: uniform card families + in-flow companion frames ===== */
+
+/* --- Technical skills: equal cards, fixed internal rows --- */
+.dx .skills ul{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;align-items:stretch!important;grid-auto-rows:1fr}
+.dx .skills li,.dx .skills li:first-child{
+  display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;
+  grid-template-rows:minmax(2.9em,auto) auto auto;align-content:start;align-items:center;
+  gap:8px 12px;min-height:140px;height:100%;padding:14px 16px 14px 14px;
+  grid-column:auto!important;grid-row:auto!important;font-size:.98rem;margin:0!important}
+.dx .skills li .skill-icon,.dx .skills li:first-child .skill-icon{width:34px;height:34px;font-size:.95rem;grid-row:1;grid-column:1}
+.dx .skills li>span:nth-child(2){grid-row:1;grid-column:2;line-height:1.35;overflow-wrap:anywhere}
+.dx .skills li .dx-bar{grid-row:2;grid-column:1/-1;align-self:end}
+.dx .skills li .dx-type{grid-row:3;grid-column:1/-1;justify-self:start}
+
+/* --- Project entries: ONE size per family --- */
+.dx .ent-grid{gap:2rem 1.6rem;align-items:stretch}
+.dx #academic .ent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dx #mini .ent-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.dx #work .ent-grid,.dx #habits .ent-grid{grid-template-columns:minmax(0,1fr)}
+.dx .ent-grid .ent{grid-column:auto;display:flex;flex-direction:column;height:100%}
+.dx .ent-grid .ent .ent-fig{aspect-ratio:16/10;min-height:0;order:0;border:0;border-bottom:3px solid var(--red)}
+.dx .ent-body{flex:1;gap:.75rem}
+.dx .ent .d{flex:1 1 auto}
+.dx .ent h4{min-height:2.3em;display:flex;align-items:flex-start}
+.dx .ent-ab{align-content:flex-start}
+.dx .ent .dx-open{margin-top:auto}
+.dx #mini .ent-body{padding:1.1rem 1.2rem 1.4rem}
+.dx #mini .ent h4{font-size:1.2rem!important}
+.dx #mini .ent .d{font-size:.93rem}
+/* main projects + side project: larger horizontal entries, still identical to each other */
+@media(min-width:901px){
+ .dx #work .ent-grid .ent,.dx #habits .ent-grid .ent{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);min-height:340px}
+ .dx #work .ent-grid .ent .ent-fig,.dx #habits .ent-grid .ent .ent-fig{aspect-ratio:auto;height:100%;min-height:300px;border-bottom:0;border-right:3px solid var(--red)}
+ .dx #work .ent h4,.dx #habits .ent h4{min-height:0}
+}
+@media(max-width:1024px){.dx #mini .ent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dx .skills ul{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:768px){.dx #academic .ent-grid,.dx #mini .ent-grid{grid-template-columns:minmax(0,1fr)}.dx .ent h4{min-height:0}}
+@media(max-width:560px){.dx .skills ul{grid-template-columns:minmax(0,1fr)!important}.dx .skills li,.dx .skills li:first-child{min-height:120px}}
+
+/* --- Companion frame (Pokédex scan card) --- */
+.dx-pal{position:relative;display:flex;align-items:center;gap:14px;padding:10px 18px 10px 10px;
+  background:var(--surface-soft);border:1px solid var(--border);border-radius:14px;width:fit-content;max-width:100%}
+.dx-pal::before,.dx-pal::after{content:"";position:absolute;width:12px;height:12px;border:0 solid var(--red-t);pointer-events:none}
+.dx-pal::before{left:4px;top:4px;border-width:2px 0 0 2px}.dx-pal::after{right:4px;bottom:4px;border-width:0 2px 2px 0}
+.dx-pbox{width:76px;height:76px;border-radius:12px;overflow:hidden;background:radial-gradient(circle,var(--surface) 40%,var(--surface-soft))}
+.dx-pbox img{position:static;inset:auto;width:100%;height:100%;padding:4px;object-fit:contain;display:block}
+.dx-pbox.has .pb{display:none}
+.dx-pal figcaption{gap:3px}
+.dx-pal figcaption b{font-size:11px;white-space:normal}
+.dx-pal figcaption span{font-size:1.05rem;line-height:1.1}
+.dx-pal figcaption em{font:normal 700 11px var(--mono);letter-spacing:.1em;color:var(--ok-t)}
+.dx-pal figcaption em::before{content:"● ";}
+.dx #intro .dx-pal .dx-pbox{width:104px;height:104px}
+.dx #intro .dx-pal{width:100%}
+.dx-pals{gap:12px;margin-bottom:1.6rem}
+@media(max-width:900px){.dx-pbox{width:64px;height:64px}.dx #intro .dx-pal .dx-pbox{width:84px;height:84px}}
+@media(max-width:560px){.dx-pal{width:100%}.dx-pbox{width:56px;height:56px}}
+
+/* ===== v6: nav dock, modal viewer, mobile pass (single consolidated block) ===== */
+.dx img,.dx video{max-width:100%}
+.dx .page>*{min-width:0}
+.dx .section-title span,.dx .subsection-title span{min-width:0;overflow-wrap:anywhere}
+.dx .carousel-card .window-img{max-height:min(46dvh,520px)}
+.dx .carousel-card .window-text{overflow-wrap:anywhere}
+.dx-explore{max-width:100%;white-space:normal}
+.dx .social-card,.dx .social-card .label,.dx .social-card .handle-tag{min-width:0}
+@media(hover:none){.dx .social-card:hover{translate:none}.dx .social-card .label::after{display:none}}
+/* nav: compact bottom dock below 1100px (scrolls sideways, active item follows scroll) */
+@media(max-width:1099px){
+ .dx .rail{top:auto!important;bottom:0!important;left:0!important;right:0!important;translate:none!important;transform:none!important;width:auto;max-height:none;
+  flex-direction:row;align-items:stretch;gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));
+  overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;border:0;border-top:4px solid var(--red);border-radius:14px 14px 0 0}
+ .dx .rail::before{display:none}
+ .dx .rail::after{left:0;top:0;width:calc(var(--p,0)*100%);height:3px}
+ .dx .rail a{flex:0 0 auto;min-height:44px;padding:0 12px;white-space:nowrap;scroll-snap-align:center}
+ .dx .rail a:hover{transform:none}
+ .dx .page{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:480px){
+ .dx-hud{gap:8px;padding:0 10px;letter-spacing:.08em}.dx-hud .sig{display:none}
+ .dx-hud button{padding:4px 6px}.dx-th{font-size:0!important;padding:3px!important}
+}
+@media(max-width:360px){.dx-hud .on{display:none}}
+/* mobile layout */
+@media(max-width:700px){
+ .dx .section-title{gap:.4rem .65rem;line-height:1.05}
+ .dx .hero-inner{gap:1.75rem;padding:1rem 0 2rem}
+ .dx .hero-name{font-size:clamp(2.2rem,11vw,3.2rem)}
+ .dx .hero-photo{width:min(240px,72%)}
+ .dx .photo-btn{width:44px;height:44px}.dx .photo-btn.photo-prev{right:62px}.dx .photo-btn.photo-next{right:10px}
+ .dx .photo-card .photo-info{padding:1rem 1.1rem}
+ /* gallery viewer: one card per view, controls in a row under the card */
+ .dx .modal-backdrop{padding-inline:.625rem}
+ .dx .carousel-wrap{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"vp vp vp" "pv dt nx";align-items:center;gap:.75rem .5rem}
+ .dx .carousel-viewport{grid-area:vp;min-width:0}
+ .dx .carousel-btn{position:static;left:auto;right:auto;transform:none!important;width:44px;height:44px;font-size:.9rem}
+ .dx .carousel-btn.prev{grid-area:pv}.dx .carousel-btn.next{grid-area:nx}
+ .dx .carousel-dots{grid-area:dt;margin:0;gap:.45rem}
+ .dx .carousel-slide{flex:0 0 100%;padding:0 .2rem;opacity:1;transform:none}
+}
+@media(max-width:600px){
+ .dx .skills ul{grid-template-columns:minmax(0,1fr)!important}
+ .dx .skills li,.dx .skills li:first-child{min-height:112px}
+}
+@media(max-width:560px){
+ .dx .contact-card{padding:4.5rem 1.25rem 1.5rem}
+ .dx .contact-card::before{font-size:9px;letter-spacing:.1em;padding:8px 12px}
+}
+</style>
+<script id="pokedex-v5-js">
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const DEX = {pikachu:[25,'ELECTRIC'],eevee:[133,'NORMAL'],bulbasaur:[1,'GRASS / POISON'],charmander:[4,'FIRE'],
+    squirtle:[7,'WATER'],gengar:[94,'GHOST / POISON'],lucario:[448,'FIGHTING / STEEL'],snorlax:[143,'NORMAL'],
+    psyduck:[54,'WATER'],ditto:[132,'NORMAL']};
+  const art = n => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${n}.png`;
+
+  /* intentional assignments */
+  const assign = [['#work .dx-pal--sec','charmander'],['#academic .dx-pal--sec','lucario'],['#mini .dx-pal--sec','gengar'],
+    ['.story-lead .dx-pal','squirtle'],['.contact-card .dx-pal','psyduck']];
+  const pals = $$('.dx-pal');
+  assign.forEach(([s, m]) => { const f = $(s); if (f) f.dataset.m = m; });
+  /* skills legend keeps just Bulbasaur; the rest would crowd the cards */
+  $$('.dx-pals .dx-pal').forEach(f => { const m = $('.dx-pbox', f)?.dataset.m; if (m !== 'bulbasaur') f.remove(); });
+
+  $$('.dx-pal').forEach(f => {
+    const m = f.dataset.m || $('.dx-pbox', f).dataset.m, d = DEX[m]; if (!d) return;
+    const role = ($('figcaption b', f) || {}).textContent || 'COMPANION';
+    const name = m[0].toUpperCase() + m.slice(1);
+    f.innerHTML = `<span class="dx-pbox" data-m="${m}"><i class="pb" aria-hidden="true"></i></span>
+      <figcaption><b>#${String(d[0]).padStart(3,'0')} · ${d[1]}</b><span>${name}</span><em>${role.replace(/^[^A-Z]*/,'')} ACTIVE</em></figcaption>`;
+    const box = $('.dx-pbox', f), img = new Image();
+    img.alt = `${name}, Pokémon companion`; img.width = img.height = 96; img.decoding = 'async'; img.loading = 'lazy';
+    img.addEventListener('load', () => box.classList.add('has'));
+    img.addEventListener('error', () => img.remove());
+    img.src = art(d[0]); box.append(img);
+  });
+})();
+</script>
+
+<script id="pokedex-v6-js">
+/* keep the active dock item visible on mobile (horizontal scroll only) */
+(() => {const r=document.querySelector('.rail');if(!r)return;
+ new MutationObserver(()=>{if(r.scrollWidth<=r.clientWidth)return;const a=r.querySelector('a.on');
+  if(a)r.scrollTo({left:a.offsetLeft-(r.clientWidth-a.offsetWidth)/2,behavior:'auto'});}).observe(r,{subtree:true,attributes:true,attributeFilter:['class']});})();
 </script>
 </body>
 </html>
