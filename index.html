@@ -3990,53 +3990,94 @@ html[data-theme=light] .dxb[data-l="0"] svg{filter:blur(.4px)}
  const w=document.createElement('div');w.className='story-companion';f.before(w);w.append(f);})();
 </script>
 <script id="pokedex-v8-js">
-/* floating outline Poke Balls: inline SVG, ~16 elements max, 3 depth layers */
+/* outline Poke Balls roam the whole viewport in batches of 5; when a batch finishes, the next one comes out */
 (() => {
   const bg=document.querySelector('.dx-bg'); if(!bg) return;
   const BASE='<circle cx="50" cy="50" r="46"/><path d="M4 50H38M62 50H96"/><circle cx="50" cy="50" r="12"/><circle cx="50" cy="50" r="5.5"/>';
+
   const M={
+
    'poke-ball':'<path d="M17 34A36 36 0 0 1 32 19"/>',
+
    'great-ball':'<path d="M10 34Q22 16 40 12M90 34Q78 16 60 12"/>',
+
    'ultra-ball':'<path d="M10 38L28 24L42 34M58 34L72 24L90 38M44 12L50 20L56 12"/>',
+
    'master-ball':'<path d="M32 40V22L50 34L68 22V40"/><circle cx="14" cy="34" r="5"/><circle cx="86" cy="34" r="5"/>',
+
    'premier-ball':'<circle cx="50" cy="50" r="38"/>',
+
    'luxury-ball':'<path d="M8 40Q50 22 92 40M16 28Q50 12 84 28"/>',
+
    'heal-ball':'<path d="M50 36C39 29 33 22 38 17C43 12.5 48 16 50 20C52 16 57 12.5 62 17C67 22 61 29 50 36Z"/>',
+
    'dive-ball':'<path d="M14 32q9-8 18 0t18 0t18 0t18 0M20 20q7-6 15 0t15 0t15 0"/>',
+
    'net-ball':'<path d="M30 10V38M50 8V38M70 10V38M22 18H78M12 28H88"/>',
+
    'nest-ball':'<path d="M16 36Q50 4 84 36M30 38Q50 20 70 38"/>',
+
    'timer-ball':'<path d="M16 50A34 34 0 0 1 84 50" stroke-dasharray="3 4"/><path d="M50 8V16"/>',
+
    'repeat-ball':'<path d="M10 42H90M18 28H82" stroke-dasharray="7 5"/>',
+
    'quick-ball':'<path d="M57 8L40 30H54L45 36"/>',
+
    'dusk-ball':'<path d="M58 14A18 18 0 1 0 62 38A14 14 0 1 1 58 14Z"/>'};
+
   if(!document.getElementById('dxsprite')) document.body.insertAdjacentHTML('beforeend','<svg id="dxsprite" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">'+Object.keys(M).map(k=>`<symbol id="dxb-${k}" viewBox="0 0 100 100">${BASE}${M[k]}</symbol>`).join('')+'</svg>');
+
   /* [neon (dark), ink (light)] */
+
   const C={'poke-ball':['#ff3d5a','#d62839'],'great-ball':['#3b9bff','#1d5fd1'],'ultra-ball':['#ffd23f','#b07d00'],'master-ball':['#e060ff','#9b2bc4'],'premier-ball':['#e8f0ff','#5b6b88'],'luxury-ball':['#ff9a3c','#c25e00'],'heal-ball':['#ff7ac8','#c4278a'],'dive-ball':['#22d3ee','#0a8aa3'],'net-ball':['#34d399','#0f8a5f'],'nest-ball':['#a3e635','#5f8f0a'],'timer-ball':['#ff6b6b','#c73030'],'repeat-ball':['#fb923c','#c2570c'],'quick-ball':['#38bdf8','#1478b5'],'dusk-ball':['#4ade80','#1c9a4d']};
-  /* [ball, layer(0 far,1 mid,2 near), x%, y%, size(px, multiple of 30), min tier: 2 all / 1 tablet+ / 0 desktop] */
-  const B=[['ultra-ball',1,7,20,60,2],['dive-ball',1,94,54,60,2],['premier-ball',1,8,80,60,2],['heal-ball',1,5,46,60,2],['master-ball',2,1,38,120,2],['quick-ball',0,93,9,30,2],
-    ['great-ball',1,90,88,60,1],['luxury-ball',1,91,24,60,1],['poke-ball',2,97,84,90,1],['timer-ball',0,4,30,30,1],
-    ['dusk-ball',2,2,70,90,0],['nest-ball',0,6,60,30,0],['net-ball',0,95,40,30,0],['repeat-ball',0,3,90,30,0],['poke-ball',0,8,5,30,0],['great-ball',0,78,10,30,0]];
-  const mq=q=>matchMedia(q);
-  const tier=()=>mq('(max-width:700px)').matches?2:mq('(max-width:1024px)').matches?1:0;
-  const rm=mq('(prefers-reduced-motion: reduce)').matches;
-  function build(){
-    bg.innerHTML=''; const t=tier(), mob=t===2, K=[.3,.6,1];
-    const layers=[0,1,2].map(i=>{const d=document.createElement('div');d.className='dx-layer';d.style.setProperty('--k',K[i]);bg.append(d);return d;});
-    B.forEach((b,i)=>{ if(b[5]<t) return; const [n,l,x,y,sz0]=b, sz=mob?Math.max(30,sz0/2):sz0;
-      const e=document.createElement('div'); e.className='dxb'; e.dataset.l=l;
-      const o=[.5,.85,1][l], sg=i%2?1:-1, am=[.6,1,1.5][l];
-      const st={'--x':(mob?(x<50?2:98):x)+'%','--y':y+'%','--sz':sz+'px','--o':(o*(mob?.8:1)).toFixed(2),'--c':C[n][0],'--cl':C[n][1],'--t':(14+(i*5)%15)*[1.4,1,.85][l]+'s','--d':'-'+((i*3.1)%13).toFixed(1)+'s',
-        '--dx':sg*(8+(i*7)%15)*am+'px','--dy':(-1*sg)*(10+(i*5)%18)*am+'px','--r0':(-(i%5)*2)+'deg','--r1':sg*(4+(i*3)%11)+'deg','--s1':(1+((i%4)-1.5)*.025).toFixed(3)};
-      for(const k in st) e.style.setProperty(k,st[k]);
-      e.innerHTML=`<div class="fb"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#dxb-${n}"/></svg></div>`; layers[l].append(e); });
-    if(!mob){ bg.insertAdjacentHTML('beforeend','<i class="dx-scan"></i>');
-      [['GRID 07·C','3%','96%'],['DATA STREAM 0x2F','84%','4.5%'],['SIG ▮▮▮▯','2%','12%'],['SYS · POKÉDEX / ONLINE','70%','97%']].forEach(([tx,x,y])=>bg.insertAdjacentHTML('beforeend',`<span class="dx-mark" style="left:${x};top:${y}">${tx}</span>`)); }
+
+  const mq=q=>matchMedia(q), rm=mq('(prefers-reduced-motion: reduce)').matches;
+  const R=(a,b)=>a+Math.random()*(b-a), P=a=>a[Math.floor(Math.random()*a.length)];
+  const names=Object.keys(M), PER=5, GAP=1600;
+  const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+  const ease=['ease-in-out','cubic-bezier(.45,0,.25,1)','cubic-bezier(.3,.1,.3,1)','linear'];
+  let last=[];
+
+  /* a point just outside a random edge of the viewport */
+  function edge(sz){const w=innerWidth,h=innerHeight,m=sz*.8,side=Math.floor(Math.random()*4);
+    return side===0?[R(0,w),-m]:side===1?[w+m,R(0,h)]:side===2?[R(0,w),h+m]:[-m,R(0,h)];}
+
+  function launch(name,i){
+    const small=mq('(max-width:700px)').matches, l=P([0,1,1,2]);
+    const sz=Math.round([R(34,46),R(56,78),R(90,120)][l]*(small?.62:1));
+    const e=document.createElement('div'); e.className='dxb dxr'; e.dataset.l=l;
+    const st={left:'0',top:'0',margin:'0',width:sz+'px',height:sz+'px',position:'absolute',willChange:'transform,opacity'};
+    Object.assign(e.style,st);
+    e.style.setProperty('--o',[.55,.85,1][l]*(small?.85:1)); e.style.setProperty('--c',C[name][0]); e.style.setProperty('--cl',C[name][1]);
+    e.innerHTML=`<div class="fb" style="animation:none;opacity:0"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#dxb-${name}"/></svg></div>`;
+    bg.append(e);
+    const fb=e.firstChild, dur=R(17,26)*[1.25,1,.85][l]*1000, delay=i*R(250,900);
+    /* path: off-screen edge -> 2-4 random interior waypoints -> off-screen edge */
+    const n=2+Math.floor(Math.random()*3), pts=[edge(sz)];
+    for(let k=0;k<n;k++) pts.push([R(.04,.96)*innerWidth,R(.05,.95)*innerHeight]);
+    pts.push(edge(sz));
+    const spin=P([-1,1])*R(120,520), kind=P(['pulse','steady','steady']);
+    const kf=pts.map((p,k)=>{const f=k/(pts.length-1);
+      return {transform:`translate3d(${(p[0]-sz/2).toFixed(1)}px,${(p[1]-sz/2).toFixed(1)}px,0) rotate(${(spin*f).toFixed(1)}deg) scale(${kind==='pulse'&&k%2?R(1.08,1.25).toFixed(2):1})`,easing:P(ease)};});
+    const fade=[{opacity:0},{opacity:1,offset:.1},{opacity:1,offset:.86},{opacity:0}];
+    let a1,a2;
+    if(rm){ /* reduced motion: hold still, only fade */
+      kf.splice(1); a1=e.animate([kf[0],kf[0]],{duration:dur,delay,fill:'both'}); }
+    else a1=e.animate(kf,{duration:dur,delay,fill:'both',easing:'linear'});
+    a2=fb.animate(fade,{duration:dur,delay,fill:'both',easing:'ease-in-out'});
+    return Promise.all([a1.finished,a2.finished]).then(()=>e.remove()).catch(()=>e.remove());
   }
-  build();
-  [mq('(max-width:700px)'),mq('(max-width:1024px)')].forEach(m=>m.addEventListener('change',build));
-  /* desktop-only subtle pointer parallax (scroll parallax already runs from --sy) */
-  if(!rm && mq('(hover:hover) and (pointer:fine)').matches){ let q=0,px=0,py=0;
-    addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2;if(q||tier()>0)return;q=requestAnimationFrame(()=>{q=0;bg.style.setProperty('--bx',px.toFixed(3));bg.style.setProperty('--by',py.toFixed(3));});},{passive:true}); }
+
+  function batch(){
+    let pool=shuffle(names.filter(n=>!last.includes(n))); if(pool.length<PER) pool=shuffle(names);
+    last=pool.slice(0,PER);
+    Promise.all(last.map(launch)).then(()=>setTimeout(batch,GAP));
+  }
+
+  /* static HUD furniture (desktop) */
+  if(!mq('(max-width:700px)').matches){ bg.insertAdjacentHTML('beforeend','<i class="dx-scan"></i>');
+    [['GRID 07·C','3%','96%'],['DATA STREAM 0x2F','84%','4.5%'],['SIG ▮▮▮▯','2%','12%'],['SYS · POKÉDEX / ONLINE','70%','97%']].forEach(([tx,x,y])=>bg.insertAdjacentHTML('beforeend',`<span class="dx-mark" style="left:${x};top:${y}">${tx}</span>`)); }
+  batch();
 })();
 </script>
 </body>
