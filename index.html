@@ -3612,8 +3612,11 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
   /* scan transition bars, skill bars, active nav (IntersectionObserver, once) */
   const sbs = new Map();
   $$('section.section').forEach(s => { const b = document.createElement('div'); b.className = 'dx-sb'; b.setAttribute('aria-hidden', 'true'); b.innerHTML = '<span>SCANNING…</span><i><b></b></i>'; s.prepend(b); sbs.set(s, b); });
-  const once = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; once.unobserve(e.target); const b = sbs.get(e.target); if (b) { b.classList.add('go'); setTimeout(() => { b.firstChild.textContent = 'ENTRY FOUND'; b.classList.add('done'); beep(520); }, rm ? 0 : 650); } if (e.target.classList.contains('skills')) e.target.classList.add('dx-in'); }), { threshold: .2 });
-  sbs.forEach((_, s) => once.observe(s)); $$('.skills').forEach(s => once.observe(s));
+  /* observe the scan bar itself: a 20%-of-section threshold can never be reached on tall sections */
+  const barObs = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; barObs.unobserve(e.target); const b = e.target; b.classList.add('go'); setTimeout(() => { b.firstChild.textContent = 'ENTRY FOUND'; b.classList.add('done'); beep(520); }, rm ? 0 : 650); }), { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+  sbs.forEach(b => barObs.observe(b));
+  const once = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; once.unobserve(e.target); if (e.target.classList.contains('skills')) e.target.classList.add('dx-in'); }), { threshold: .2 });
+  $$('.skills').forEach(s => once.observe(s));
   const links = $$('.rail a');
   const act = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }), { rootMargin: '-45% 0px -50% 0px' });
   $$('#intro, section.section').forEach(s => act.observe(s));
@@ -3897,21 +3900,33 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
 
 /* ===== v7: speed-line background, rail sizing vars, internship companion ===== */
 body.dx{--rail-w:clamp(188px,15vw,212px);--rail-gap:clamp(16px,2vw,32px)}
-html[data-theme=dark] .dx-bg{--b0:#0b3f99;--b1:#072a6e;--b2:#041640;--b3:#020817;--sl:.34;--or:.36;--scrim:rgba(2,8,24,.55)}
-html[data-theme=light] .dx-bg{--b0:#bcdcff;--b1:#d3e6ff;--b2:#e6f0fd;--b3:#f4f1ea;--sl:.3;--or:.32;--scrim:rgba(244,241,234,0)}
-.dx-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
- background:radial-gradient(ellipse 90% 80% at 50% 45%,transparent 38%,var(--scrim) 100%),
-  radial-gradient(circle at 58% 42%,rgba(170,238,255,.42) 0,rgba(70,170,255,.2) 5%,transparent 24%),
-  radial-gradient(ellipse 85% 75% at 58% 42%,var(--b0) 0,var(--b1) 30%,var(--b2) 64%,var(--b3) 100%)}
-.dx-bg::before,.dx-bg::after{content:"";position:absolute;inset:-42% -32% -28% -18%;
- -webkit-mask-image:radial-gradient(circle at 50% 50%,transparent 0,transparent 6%,#000 30%,#000 68%,rgba(0,0,0,.5) 100%);
- mask-image:radial-gradient(circle at 50% 50%,transparent 0,transparent 6%,#000 30%,#000 68%,rgba(0,0,0,.5) 100%);
- will-change:transform}
-.dx-bg::before{background:conic-gradient(from 0deg at 50% 50%,transparent 0.00deg 2.71deg,rgba(40,110,255,.9) 2.71deg 3.27deg,transparent 3.27deg 6.97deg,rgba(59,155,255,.9) 6.97deg 7.76deg,transparent 7.76deg 10.33deg,rgba(200,242,255,.7) 10.33deg 10.85deg,transparent 10.85deg 15.98deg,rgba(150,230,255,.8) 15.98deg 16.17deg,transparent 16.17deg 18.57deg,rgba(90,215,255,.95) 18.57deg 19.11deg,transparent 19.11deg 23.41deg,rgba(40,110,255,.9) 23.41deg 23.84deg,transparent 23.84deg 28.39deg,rgba(59,155,255,.9) 28.39deg 28.99deg,transparent 28.99deg 33.40deg,rgba(90,215,255,.95) 33.40deg 34.17deg,transparent 34.17deg 36.22deg,rgba(59,155,255,.9) 36.22deg 36.49deg,transparent 36.49deg 40.81deg,rgba(150,230,255,.8) 40.81deg 41.54deg,transparent 41.54deg 45.19deg,rgba(200,242,255,.7) 45.19deg 45.96deg,transparent 45.96deg 48.74deg,rgba(90,215,255,.95) 48.74deg 49.09deg,transparent 49.09deg 53.68deg,rgba(150,230,255,.8) 53.68deg 54.15deg,transparent 54.15deg 57.66deg,rgba(90,215,255,.95) 57.66deg 58.21deg,transparent 58.21deg 62.98deg,rgba(59,155,255,.9) 62.98deg 63.35deg,transparent 63.35deg 67.30deg,rgba(200,242,255,.7) 67.30deg 67.45deg,transparent 67.45deg 72.47deg,rgba(150,230,255,.8) 72.47deg 72.90deg,transparent 72.90deg 76.32deg,rgba(90,215,255,.95) 76.32deg 77.19deg,transparent 77.19deg 79.89deg,rgba(90,215,255,.95) 79.89deg 80.73deg,transparent 80.73deg 84.50deg,rgba(40,110,255,.9) 84.50deg 85.39deg,transparent 85.39deg 88.95deg,rgba(59,155,255,.9) 88.95deg 89.51deg,transparent 89.51deg 94.58deg,rgba(90,215,255,.95) 94.58deg 94.91deg,transparent 94.91deg 98.02deg,rgba(40,110,255,.9) 98.02deg 98.15deg,transparent 98.15deg 103.14deg,rgba(59,155,255,.9) 103.14deg 103.35deg,transparent 103.35deg 108.12deg,rgba(40,110,255,.9) 108.12deg 108.25deg,transparent 108.25deg 113.39deg,rgba(200,242,255,.7) 113.39deg 113.65deg,transparent 113.65deg 116.24deg,rgba(59,155,255,.9) 116.24deg 116.76deg,transparent 116.76deg 120.32deg,rgba(40,110,255,.9) 120.32deg 120.74deg,transparent 120.74deg 124.31deg,rgba(150,230,255,.8) 124.31deg 124.59deg,transparent 124.59deg 130.02deg,rgba(200,242,255,.7) 130.02deg 130.90deg,transparent 130.90deg 133.98deg,rgba(59,155,255,.9) 133.98deg 134.79deg,transparent 134.79deg 137.38deg,rgba(200,242,255,.7) 137.38deg 138.27deg,transparent 138.27deg 142.77deg,rgba(59,155,255,.9) 142.77deg 142.97deg,transparent 142.97deg 145.66deg,rgba(200,242,255,.7) 145.66deg 145.99deg,transparent 145.99deg 149.17deg,rgba(90,215,255,.95) 149.17deg 149.52deg,transparent 149.52deg 151.63deg,rgba(59,155,255,.9) 151.63deg 151.91deg,transparent 151.91deg 153.78deg,rgba(200,242,255,.7) 153.78deg 154.19deg,transparent 154.19deg 157.89deg,rgba(40,110,255,.9) 157.89deg 158.76deg,transparent 158.76deg 164.05deg,rgba(40,110,255,.9) 164.05deg 164.28deg,transparent 164.28deg 166.85deg,rgba(59,155,255,.9) 166.85deg 167.09deg,transparent 167.09deg 172.32deg,rgba(59,155,255,.9) 172.32deg 172.64deg,transparent 172.64deg 175.10deg,rgba(200,242,255,.7) 175.10deg 175.71deg,transparent 175.71deg 178.34deg,rgba(40,110,255,.9) 178.34deg 179.20deg,transparent 179.20deg 183.53deg,rgba(90,215,255,.95) 183.53deg 183.98deg,transparent 183.98deg 186.24deg,rgba(150,230,255,.8) 186.24deg 186.76deg,transparent 186.76deg 189.56deg,rgba(150,230,255,.8) 189.56deg 190.23deg,transparent 190.23deg 193.80deg,rgba(40,110,255,.9) 193.80deg 194.62deg,transparent 194.62deg 197.66deg,rgba(90,215,255,.95) 197.66deg 197.91deg,transparent 197.91deg 200.24deg,rgba(200,242,255,.7) 200.24deg 200.74deg,transparent 200.74deg 205.12deg,rgba(59,155,255,.9) 205.12deg 205.46deg,transparent 205.46deg 210.40deg,rgba(40,110,255,.9) 210.40deg 210.58deg,transparent 210.58deg 214.25deg,rgba(59,155,255,.9) 214.25deg 214.42deg,transparent 214.42deg 217.40deg,rgba(59,155,255,.9) 217.40deg 217.93deg,transparent 217.93deg 220.12deg,rgba(40,110,255,.9) 220.12deg 220.35deg,transparent 220.35deg 226.27deg,rgba(200,242,255,.7) 226.27deg 226.90deg,transparent 226.90deg 231.15deg,rgba(90,215,255,.95) 231.15deg 231.38deg,transparent 231.38deg 237.06deg,rgba(150,230,255,.8) 237.06deg 237.55deg,transparent 237.55deg 242.30deg,rgba(90,215,255,.95) 242.30deg 243.17deg,transparent 243.17deg 247.48deg,rgba(90,215,255,.95) 247.48deg 247.66deg,transparent 247.66deg 252.53deg,rgba(90,215,255,.95) 252.53deg 252.90deg,transparent 252.90deg 255.01deg,rgba(90,215,255,.95) 255.01deg 255.56deg,transparent 255.56deg 261.14deg,rgba(59,155,255,.9) 261.14deg 261.84deg,transparent 261.84deg 266.97deg,rgba(150,230,255,.8) 266.97deg 267.80deg,transparent 267.80deg 269.96deg,rgba(90,215,255,.95) 269.96deg 270.45deg,transparent 270.45deg 275.90deg,rgba(90,215,255,.95) 275.90deg 276.35deg,transparent 276.35deg 281.78deg,rgba(200,242,255,.7) 281.78deg 282.34deg,transparent 282.34deg 286.93deg,rgba(90,215,255,.95) 286.93deg 287.34deg,transparent 287.34deg 291.70deg,rgba(90,215,255,.95) 291.70deg 291.88deg,transparent 291.88deg 297.85deg,rgba(150,230,255,.8) 297.85deg 298.66deg,transparent 298.66deg 302.09deg,rgba(200,242,255,.7) 302.09deg 302.78deg,transparent 302.78deg 306.51deg,rgba(200,242,255,.7) 306.51deg 306.99deg,transparent 306.99deg 309.14deg,rgba(90,215,255,.95) 309.14deg 309.84deg,transparent 309.84deg 312.95deg,rgba(90,215,255,.95) 312.95deg 313.14deg,transparent 313.14deg 315.90deg,rgba(40,110,255,.9) 315.90deg 316.57deg,transparent 316.57deg 321.64deg,rgba(40,110,255,.9) 321.64deg 322.28deg,transparent 322.28deg 325.15deg,rgba(150,230,255,.8) 325.15deg 325.28deg,transparent 325.28deg 327.68deg,rgba(200,242,255,.7) 327.68deg 328.28deg,transparent 328.28deg 330.79deg,rgba(40,110,255,.9) 330.79deg 331.62deg,transparent 331.62deg 335.51deg,rgba(40,110,255,.9) 335.51deg 335.82deg,transparent 335.82deg 340.42deg,rgba(40,110,255,.9) 340.42deg 340.69deg,transparent 340.69deg 345.87deg,rgba(59,155,255,.9) 345.87deg 346.58deg,transparent 346.58deg 352.07deg,rgba(200,242,255,.7) 352.07deg 352.49deg,transparent 352.49deg 360deg);opacity:var(--sl);animation:dxdrift 80s ease-in-out infinite alternate}
-.dx-bg::after{background:conic-gradient(from 0deg at 50% 50%,transparent 0.00deg 8.40deg,rgba(255,214,70,.9) 8.40deg 8.72deg,transparent 8.72deg 44.16deg,rgba(255,120,30,.85) 44.16deg 44.88deg,transparent 44.88deg 58.67deg,rgba(255,170,40,.95) 58.67deg 59.46deg,transparent 59.46deg 74.62deg,rgba(255,170,40,.95) 74.62deg 75.13deg,transparent 75.13deg 110.39deg,rgba(255,120,30,.85) 110.39deg 110.85deg,transparent 110.85deg 136.68deg,rgba(255,120,30,.85) 136.68deg 137.11deg,transparent 137.11deg 161.78deg,rgba(255,170,40,.95) 161.78deg 162.07deg,transparent 162.07deg 181.85deg,rgba(255,120,30,.85) 181.85deg 182.44deg,transparent 182.44deg 214.28deg,rgba(255,214,70,.9) 214.28deg 214.84deg,transparent 214.84deg 245.02deg,rgba(255,120,30,.85) 245.02deg 245.58deg,transparent 245.58deg 360deg);opacity:var(--or);animation:dxdrift 110s ease-in-out infinite alternate-reverse}
-@keyframes dxdrift{from{transform:translate3d(-1.2%,-.8%,0) scale(1)}to{transform:translate3d(1.2%,.8%,0) scale(1.035)}}
-@media(max-width:700px){.dx-bg::before{opacity:calc(var(--sl)*.7);animation:none}.dx-bg::after{opacity:calc(var(--or)*.7);animation:none}}
-@media(prefers-reduced-motion:reduce){.dx-bg::before,.dx-bg::after{animation:none}}
+/* ---- background: Pokédex tech environment (layers: base → HUD → balls → marks) ---- */
+html[data-theme=dark] .dx-bg{--gl:rgba(80,200,255,.07);--gl2:rgba(150,110,255,.09);--ring:rgba(120,170,255,.10);--dot:rgba(120,220,255,.28);--mk:#7fb4ff;--scan:rgba(90,220,255,.55);--ho:.55;--fx:none;
+ background:radial-gradient(ellipse 70% 60% at 72% 18%,rgba(125,70,255,.16),transparent 62%),radial-gradient(ellipse 60% 50% at 12% 88%,rgba(0,200,255,.11),transparent 62%),radial-gradient(ellipse 50% 40% at 50% 55%,rgba(255,60,120,.05),transparent 70%),linear-gradient(180deg,#05070d,#080b15 55%,#04060b)}
+html[data-theme=light] .dx-bg{--gl:rgba(50,100,190,.08);--gl2:rgba(110,90,200,.08);--ring:rgba(60,110,200,.10);--dot:rgba(60,110,200,.30);--mk:#3f5fa3;--scan:rgba(60,130,230,.45);--ho:.32;--fx:drop-shadow(0 8px 10px rgba(40,60,110,.28));
+ background:radial-gradient(ellipse 70% 60% at 75% 15%,rgba(150,190,255,.38),transparent 62%),radial-gradient(ellipse 60% 50% at 10% 90%,rgba(190,170,255,.24),transparent 62%),linear-gradient(180deg,#fbfcff,#f1f4fa 60%,#e9eef8)}
+.dx-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:strict}
+.dx-bg::before{content:"";position:absolute;inset:0;
+ background:radial-gradient(circle,var(--dot) 1px,transparent 1.6px) 0 0/96px 96px,linear-gradient(var(--gl2) 1px,transparent 1px) 0 0/360px 360px,linear-gradient(90deg,var(--gl2) 1px,transparent 1px) 0 0/360px 360px,linear-gradient(var(--gl) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,var(--gl) 1px,transparent 1px) 0 0/72px 72px;
+ -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 10%,transparent 78%);mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 10%,transparent 78%)}
+.dx-bg::after{content:"";position:absolute;inset:0;
+ background:repeating-radial-gradient(circle at 80% 16%,transparent 0 79px,var(--ring) 80px 81px),repeating-radial-gradient(circle at 10% 82%,transparent 0 59px,var(--ring) 60px 61px);
+ -webkit-mask-image:radial-gradient(circle at 80% 16%,#000 0,transparent 34%),radial-gradient(circle at 10% 82%,#000 0,transparent 30%);-webkit-mask-composite:source-over;
+ mask-image:radial-gradient(circle at 80% 16%,#000 0,transparent 34%),radial-gradient(circle at 10% 82%,#000 0,transparent 30%)}
+.dx-scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--scan),transparent);opacity:.45;animation:dxscan2 18s linear infinite;will-change:transform}
+@keyframes dxscan2{from{transform:translate3d(0,-4vh,0)}to{transform:translate3d(0,104vh,0)}}
+.dx-layer{position:absolute;inset:0;transform:translate3d(calc(var(--bx,0)*var(--k)*14px),calc(var(--sy,0)*var(--k)*-.035px + var(--by,0)*var(--k)*10px),0)}
+.dxb{position:absolute;left:var(--x);top:var(--y);width:var(--sz);height:var(--sz);margin:calc(var(--sz)/-2) 0 0 calc(var(--sz)/-2)}
+.dxb .fb{position:relative;width:100%;height:100%;animation:dxfl2 var(--t) ease-in-out var(--d) infinite alternate;will-change:transform}
+.dxb .fb::before{content:"";position:absolute;inset:-55%;background:radial-gradient(circle,var(--h) 0,transparent 62%);opacity:var(--ho)}
+.dxb:not([data-h]) .fb::before{display:none}
+.dxb img{position:relative;width:100%;height:100%;display:block;image-rendering:pixelated;opacity:var(--o)}
+.dxb[data-l="0"] img{filter:blur(1px)}.dxb[data-l="1"] img,.dxb[data-l="2"] img{filter:var(--fx)}
+@keyframes dxfl2{from{transform:translate3d(0,0,0) rotate(var(--r0)) scale(1)}to{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--r1)) scale(var(--s1))}}
+.dx-mark{position:absolute;font:9px var(--mono);letter-spacing:.2em;color:var(--mk);opacity:.45;white-space:nowrap}
+@media(max-width:900px){.dx-mark{display:none}}
+@media(max-width:700px){.dx-layer{transform:none}.dxb .fb{animation-duration:calc(var(--t)*1.6)}.dxb .fb::before{display:none}.dx-scan{display:none}.dx-bg::after{display:none}}
+@media(prefers-reduced-motion:reduce){.dx-layer{transform:none}.dxb .fb,.dx-scan{animation:none}}
 /* rail: labels never clip */
 .dx .rail a{min-width:0;white-space:nowrap}
 /* internship: companion has its own in-flow slot in the story column */
@@ -3920,6 +3935,17 @@ html[data-theme=light] .dx-bg{--b0:#bcdcff;--b1:#d3e6ff;--b2:#e6f0fd;--b3:#f4f1e
 .dx .story-companion{margin-top:clamp(1.25rem,3vw,2rem);padding-top:1.25rem;border-top:1px dashed var(--border);max-width:100%}
 .dx .story-companion .dx-pal{margin:0}
 .dx .story-lead .dx-xp{margin-bottom:0}
+/* ---- outline-only Poke Balls: neon (dark) / ink (light) ---- */
+.dxb svg{position:relative;width:100%;height:100%;display:block;overflow:visible;fill:none;stroke:var(--sc);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:var(--o)}
+#dxsprite *{vector-effect:non-scaling-stroke}
+html[data-theme=dark] .dxb{--sc:var(--c)}
+html[data-theme=dark] .dxb svg{filter:drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 8px var(--c))}
+html[data-theme=dark] .dxb[data-l="0"] svg{filter:blur(.5px) drop-shadow(0 0 5px var(--c))}
+html[data-theme=dark] .dxb[data-l="2"] svg{stroke-width:2;filter:drop-shadow(0 0 3px var(--c)) drop-shadow(0 0 12px var(--c))}
+html[data-theme=light] .dxb{--sc:var(--cl)}
+html[data-theme=light] .dxb svg{stroke-width:1.7;filter:none;opacity:calc(var(--o)*.75)}
+html[data-theme=light] .dxb[data-l="0"] svg{filter:blur(.4px)}
+@media(prefers-reduced-motion:reduce){.dxb svg{filter:none!important}}
 </style>
 <script id="pokedex-v5-js">
 (() => {
@@ -3962,6 +3988,56 @@ html[data-theme=light] .dx-bg{--b0:#bcdcff;--b1:#d3e6ff;--b2:#e6f0fd;--b3:#f4f1e
 /* wrap the internship companion in its own in-flow slot */
 (() => {const f=document.querySelector('.story-lead .dx-pal');if(!f||f.parentElement.classList.contains('story-companion'))return;
  const w=document.createElement('div');w.className='story-companion';f.before(w);w.append(f);})();
+</script>
+<script id="pokedex-v8-js">
+/* floating outline Poke Balls: inline SVG, ~16 elements max, 3 depth layers */
+(() => {
+  const bg=document.querySelector('.dx-bg'); if(!bg) return;
+  const BASE='<circle cx="50" cy="50" r="46"/><path d="M4 50H38M62 50H96"/><circle cx="50" cy="50" r="12"/><circle cx="50" cy="50" r="5.5"/>';
+  const M={
+   'poke-ball':'<path d="M17 34A36 36 0 0 1 32 19"/>',
+   'great-ball':'<path d="M10 34Q22 16 40 12M90 34Q78 16 60 12"/>',
+   'ultra-ball':'<path d="M10 38L28 24L42 34M58 34L72 24L90 38M44 12L50 20L56 12"/>',
+   'master-ball':'<path d="M32 40V22L50 34L68 22V40"/><circle cx="14" cy="34" r="5"/><circle cx="86" cy="34" r="5"/>',
+   'premier-ball':'<circle cx="50" cy="50" r="38"/>',
+   'luxury-ball':'<path d="M8 40Q50 22 92 40M16 28Q50 12 84 28"/>',
+   'heal-ball':'<path d="M50 36C39 29 33 22 38 17C43 12.5 48 16 50 20C52 16 57 12.5 62 17C67 22 61 29 50 36Z"/>',
+   'dive-ball':'<path d="M14 32q9-8 18 0t18 0t18 0t18 0M20 20q7-6 15 0t15 0t15 0"/>',
+   'net-ball':'<path d="M30 10V38M50 8V38M70 10V38M22 18H78M12 28H88"/>',
+   'nest-ball':'<path d="M16 36Q50 4 84 36M30 38Q50 20 70 38"/>',
+   'timer-ball':'<path d="M16 50A34 34 0 0 1 84 50" stroke-dasharray="3 4"/><path d="M50 8V16"/>',
+   'repeat-ball':'<path d="M10 42H90M18 28H82" stroke-dasharray="7 5"/>',
+   'quick-ball':'<path d="M57 8L40 30H54L45 36"/>',
+   'dusk-ball':'<path d="M58 14A18 18 0 1 0 62 38A14 14 0 1 1 58 14Z"/>'};
+  if(!document.getElementById('dxsprite')) document.body.insertAdjacentHTML('beforeend','<svg id="dxsprite" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">'+Object.keys(M).map(k=>`<symbol id="dxb-${k}" viewBox="0 0 100 100">${BASE}${M[k]}</symbol>`).join('')+'</svg>');
+  /* [neon (dark), ink (light)] */
+  const C={'poke-ball':['#ff3d5a','#d62839'],'great-ball':['#3b9bff','#1d5fd1'],'ultra-ball':['#ffd23f','#b07d00'],'master-ball':['#e060ff','#9b2bc4'],'premier-ball':['#e8f0ff','#5b6b88'],'luxury-ball':['#ff9a3c','#c25e00'],'heal-ball':['#ff7ac8','#c4278a'],'dive-ball':['#22d3ee','#0a8aa3'],'net-ball':['#34d399','#0f8a5f'],'nest-ball':['#a3e635','#5f8f0a'],'timer-ball':['#ff6b6b','#c73030'],'repeat-ball':['#fb923c','#c2570c'],'quick-ball':['#38bdf8','#1478b5'],'dusk-ball':['#4ade80','#1c9a4d']};
+  /* [ball, layer(0 far,1 mid,2 near), x%, y%, size(px, multiple of 30), min tier: 2 all / 1 tablet+ / 0 desktop] */
+  const B=[['ultra-ball',1,7,20,60,2],['dive-ball',1,94,54,60,2],['premier-ball',1,8,80,60,2],['heal-ball',1,5,46,60,2],['master-ball',2,1,38,120,2],['quick-ball',0,93,9,30,2],
+    ['great-ball',1,90,88,60,1],['luxury-ball',1,91,24,60,1],['poke-ball',2,97,84,90,1],['timer-ball',0,4,30,30,1],
+    ['dusk-ball',2,2,70,90,0],['nest-ball',0,6,60,30,0],['net-ball',0,95,40,30,0],['repeat-ball',0,3,90,30,0],['poke-ball',0,8,5,30,0],['great-ball',0,78,10,30,0]];
+  const mq=q=>matchMedia(q);
+  const tier=()=>mq('(max-width:700px)').matches?2:mq('(max-width:1024px)').matches?1:0;
+  const rm=mq('(prefers-reduced-motion: reduce)').matches;
+  function build(){
+    bg.innerHTML=''; const t=tier(), mob=t===2, K=[.3,.6,1];
+    const layers=[0,1,2].map(i=>{const d=document.createElement('div');d.className='dx-layer';d.style.setProperty('--k',K[i]);bg.append(d);return d;});
+    B.forEach((b,i)=>{ if(b[5]<t) return; const [n,l,x,y,sz0]=b, sz=mob?Math.max(30,sz0/2):sz0;
+      const e=document.createElement('div'); e.className='dxb'; e.dataset.l=l;
+      const o=[.5,.85,1][l], sg=i%2?1:-1, am=[.6,1,1.5][l];
+      const st={'--x':(mob?(x<50?2:98):x)+'%','--y':y+'%','--sz':sz+'px','--o':(o*(mob?.8:1)).toFixed(2),'--c':C[n][0],'--cl':C[n][1],'--t':(14+(i*5)%15)*[1.4,1,.85][l]+'s','--d':'-'+((i*3.1)%13).toFixed(1)+'s',
+        '--dx':sg*(8+(i*7)%15)*am+'px','--dy':(-1*sg)*(10+(i*5)%18)*am+'px','--r0':(-(i%5)*2)+'deg','--r1':sg*(4+(i*3)%11)+'deg','--s1':(1+((i%4)-1.5)*.025).toFixed(3)};
+      for(const k in st) e.style.setProperty(k,st[k]);
+      e.innerHTML=`<div class="fb"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#dxb-${n}"/></svg></div>`; layers[l].append(e); });
+    if(!mob){ bg.insertAdjacentHTML('beforeend','<i class="dx-scan"></i>');
+      [['GRID 07·C','3%','96%'],['DATA STREAM 0x2F','84%','4.5%'],['SIG ▮▮▮▯','2%','12%'],['SYS · POKÉDEX / ONLINE','70%','97%']].forEach(([tx,x,y])=>bg.insertAdjacentHTML('beforeend',`<span class="dx-mark" style="left:${x};top:${y}">${tx}</span>`)); }
+  }
+  build();
+  [mq('(max-width:700px)'),mq('(max-width:1024px)')].forEach(m=>m.addEventListener('change',build));
+  /* desktop-only subtle pointer parallax (scroll parallax already runs from --sy) */
+  if(!rm && mq('(hover:hover) and (pointer:fine)').matches){ let q=0,px=0,py=0;
+    addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2;if(q||tier()>0)return;q=requestAnimationFrame(()=>{q=0;bg.style.setProperty('--bx',px.toFixed(3));bg.style.setProperty('--by',py.toFixed(3));});},{passive:true}); }
+})();
 </script>
 </body>
 </html>
