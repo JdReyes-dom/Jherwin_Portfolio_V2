@@ -1579,7 +1579,7 @@ body.dx{--red:#e3350d;--red2:#ff5a3c;--yel:#ffd23f;--ink:#0d0f14;--panel:#161a22
 .dx .section-title,.dx .subsection-title{font-family:var(--mono)!important;text-transform:uppercase;letter-spacing:.14em;font-size:.9rem;color:var(--red2)!important}
 .dx .section-title i,.dx .section-title::before{color:var(--red2)!important}
 .dx .page{padding-top:56px}
-@media(min-width:1100px){.dx .page{padding-right:184px}}
+@media(min-width:1100px){.dx .page{max-width:1180px;padding-right:calc(var(--rail-w) + var(--rail-gap) + 24px)}}
 /* HUD */
 .dx-hud{position:fixed;top:0;left:0;right:0;height:40px;z-index:95;display:flex;align-items:center;gap:16px;padding:0 16px;background:linear-gradient(#b8260a,var(--red));border-bottom:3px solid #0006;font:600 11px var(--mono);letter-spacing:.14em;color:#fff;text-transform:uppercase}
 .dx-hud .lens{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9,#4cc9f0 35%,#06415c);border:2px solid #fff;box-shadow:0 0 10px #4cc9f0}
@@ -1590,7 +1590,7 @@ body.dx{--red:#e3350d;--red2:#ff5a3c;--yel:#ffd23f;--ink:#0d0f14;--panel:#161a22
 .dx-hud button:active,.dx-btn:active{transform:translateY(2px)}
 @keyframes dxflick{0%,92%,96%{opacity:1}94%{opacity:.4}}
 /* NAV */
-.dx .rail{position:fixed!important;left:auto!important;right:14px!important;top:50%!important;bottom:auto!important;translate:none!important;transform:translateY(-50%)!important;width:152px;max-height:calc(100dvh - 40px - 28px);z-index:94;display:flex!important;flex-direction:column;gap:2px;padding:10px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:6px 14px 6px 14px;box-shadow:0 8px 30px #0008}
+.dx .rail{position:fixed!important;left:auto!important;right:var(--rail-gap)!important;top:50%!important;bottom:auto!important;translate:none!important;transform:translateY(-50%)!important;width:var(--rail-w);max-height:calc(100dvh - 40px - 28px);z-index:94;display:flex!important;flex-direction:column;gap:2px;padding:14px 16px 14px 14px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:6px 14px 6px 14px;box-shadow:0 8px 30px #0008}
 .dx .rail::before{content:"POKÉDEX 001";position:static;display:block;flex:none;width:auto;height:auto;background:none;font:600 10px var(--mono);letter-spacing:.2em;color:var(--yel);padding:2px 6px 8px}
 .dx .rail a{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:4px;color:#9aa4b2!important;font:600 12px var(--mono);text-transform:uppercase;text-decoration:none;transition:background .2s,transform .2s,color .2s}
 .dx .rail a b{color:var(--red2)}.dx .rail a:hover{background:#ffffff0d;transform:translateX(-3px)}
@@ -1615,7 +1615,7 @@ body.dx{--red:#e3350d;--red2:#ff5a3c;--yel:#ffd23f;--ink:#0d0f14;--panel:#161a22
 .dx-mon .ball::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #111}
 .dx-mon small{position:absolute;bottom:-10px;font:600 9px var(--mono);letter-spacing:.12em;color:var(--yel);white-space:nowrap}
 @keyframes dxfloat{50%{transform:translateY(-6px)}}
-.dx .hero-photo{position:relative}.dx .skills,.dx .about-col,.dx .story-lead,.dx .contact-card{position:relative}
+.dx .hero-photo{position:relative}.dx .skills,.dx .about-col,.dx .contact-card{position:relative}
 /* skills = moves */
 .dx .skills li{display:grid!important;grid-template-columns:44px 1fr auto;gap:2px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);transition:transform .2s,border-color .2s}
 .dx .skills ul{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))!important;gap:10px!important}
@@ -1689,21 +1689,6 @@ html body.dx{background:linear-gradient(180deg,var(--bg1),var(--bg2) 60%,var(--b
 .dx::before{background:repeating-linear-gradient(0deg,var(--scan) 0 1px,transparent 1px 3px)!important}
 .dx-theming,.dx-theming *{transition:background-color .35s,color .35s,border-color .35s!important}
 /* background world */
-.dx-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.dx-bg::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 80% 10%,rgba(59,155,255,.16),transparent),radial-gradient(50% 40% at 10% 90%,rgba(227,53,13,.12),transparent)}
-.dx-grid{position:absolute;left:-50%;right:-50%;bottom:-8%;height:56vh;transform:perspective(520px) rotateX(64deg);transform-origin:50% 100%;-webkit-mask-image:linear-gradient(transparent,#000 75%);mask-image:linear-gradient(transparent,#000 75%);overflow:hidden}
-.dx-grid i{position:absolute;left:0;right:0;top:-64px;bottom:0;background:linear-gradient(var(--gridc) 1px,transparent 1px),linear-gradient(90deg,var(--gridc) 1px,transparent 1px);background-size:64px 64px;animation:dxgrid 5s linear infinite}
-@keyframes dxgrid{to{transform:translateY(64px)}}
-.dx-ball{position:absolute;left:50%;top:44%;width:min(92vmin,860px);aspect-ratio:1;translate:-50% calc(-50% + var(--sy,0)*-.06px);border-radius:50%;border:2px solid var(--ballc);background:linear-gradient(rgba(227,53,13,.07) 50%,transparent 50%)}
-.dx-ball::before{content:"";position:absolute;left:0;right:0;top:calc(50% - 1px);height:2px;background:var(--ballc)}
-.dx-ball::after{content:"";position:absolute;inset:41%;border-radius:50%;border:2px solid var(--ballc)}
-.dx-ball i{position:absolute;inset:-5%;border-radius:50%;border:1px dashed var(--ballc);animation:dxspin 90s linear infinite}
-.dx-radar{position:absolute;right:12%;top:18%;width:30vmin;height:30vmin}
-.dx-radar i{position:absolute;inset:0;border-radius:50%;border:1px solid var(--blue);opacity:0;animation:dxping 5s ease-out infinite}
-.dx-radar i:nth-child(2){animation-delay:1.6s}.dx-radar i:nth-child(3){animation-delay:3.2s}
-@keyframes dxping{0%{opacity:.5;transform:scale(.2)}100%{opacity:0;transform:scale(1.6)}}
-.dx-pts i{position:absolute;bottom:-10px;border-radius:50%;background:var(--blue);box-shadow:0 0 6px var(--blue);opacity:0;animation:dxrise var(--d) linear var(--w) infinite}
-@keyframes dxrise{10%{opacity:.7}100%{opacity:0;transform:translateY(-105vh)}}
 /* theme bridging for earlier layer */
 .dx .dx-info h4{color:var(--text-dark)}.dx .dx-info dd,.dx .dx-tools span{color:var(--text-body)}
 .dx .dx-view,.dx .dx-btn{--x:0}
@@ -1803,8 +1788,6 @@ html body.dx{--text-dark:var(--text-primary);--text-body:var(--text-secondary);-
 .dx .tag{color:var(--text-secondary)}
 /* hairline separators between screens */
 .dx .section::after{content:"";position:absolute;left:0;right:0;bottom:-4.5rem;height:1px;background:linear-gradient(90deg,var(--red-t),var(--blue-t),transparent);opacity:.6}
-.dx-bg::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:.35;animation:dxsweep 11s linear infinite}
-@keyframes dxsweep{to{transform:translateY(100vh)}}
 /* hero: encounter screen */
 .dx .hero-inner{padding:3rem 0 4rem}
 .dx-chip{position:absolute;z-index:3;font:700 11px var(--mono);letter-spacing:.12em;padding:6px 12px;background:var(--surface-elevated);color:var(--text-primary);border:1px solid var(--border);border-left:3px solid var(--red-t);clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);box-shadow:0 8px 20px #0006;transform:translateZ(70px)}
@@ -3647,7 +3630,7 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
 
   /* background world */
   const pts = Array.from({ length: innerWidth < 760 ? 10 : 26 }, () => `<i style="left:${Math.random() * 100}%;width:${1 + Math.random() * 2.5}px;height:${1 + Math.random() * 2.5}px;--d:${12 + Math.random() * 16}s;--w:-${Math.random() * 20}s"></i>`).join('');
-  document.body.insertAdjacentHTML('afterbegin', `<div class="dx-bg" aria-hidden="true"><div class="dx-ball"><i></i></div><div class="dx-grid"><i></i></div><div class="dx-radar"><i></i><i></i><i></i></div><div class="dx-pts">${pts}</div></div><div class="dx-pbt" aria-hidden="true"><div class="pbw"><div class="h t"></div><div class="h b"></div><div class="l"></div></div></div>`);
+  document.body.insertAdjacentHTML('afterbegin', `<div class="dx-bg" aria-hidden="true"></div><div class="dx-pbt" aria-hidden="true"><div class="pbw"><div class="h t"></div><div class="h b"></div><div class="l"></div></div></div>`);
 
   /* theme: saved → system → dark */
   const meta = $('meta[name=theme-color]');
@@ -3911,6 +3894,32 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
  .dx .contact-card{padding:4.5rem 1.25rem 1.5rem}
  .dx .contact-card::before{font-size:9px;letter-spacing:.1em;padding:8px 12px}
 }
+
+/* ===== v7: speed-line background, rail sizing vars, internship companion ===== */
+body.dx{--rail-w:clamp(188px,15vw,212px);--rail-gap:clamp(16px,2vw,32px)}
+html[data-theme=dark] .dx-bg{--b0:#0b3f99;--b1:#072a6e;--b2:#041640;--b3:#020817;--sl:.34;--or:.36;--scrim:rgba(2,8,24,.55)}
+html[data-theme=light] .dx-bg{--b0:#bcdcff;--b1:#d3e6ff;--b2:#e6f0fd;--b3:#f4f1ea;--sl:.3;--or:.32;--scrim:rgba(244,241,234,0)}
+.dx-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+ background:radial-gradient(ellipse 90% 80% at 50% 45%,transparent 38%,var(--scrim) 100%),
+  radial-gradient(circle at 58% 42%,rgba(170,238,255,.42) 0,rgba(70,170,255,.2) 5%,transparent 24%),
+  radial-gradient(ellipse 85% 75% at 58% 42%,var(--b0) 0,var(--b1) 30%,var(--b2) 64%,var(--b3) 100%)}
+.dx-bg::before,.dx-bg::after{content:"";position:absolute;inset:-42% -32% -28% -18%;
+ -webkit-mask-image:radial-gradient(circle at 50% 50%,transparent 0,transparent 6%,#000 30%,#000 68%,rgba(0,0,0,.5) 100%);
+ mask-image:radial-gradient(circle at 50% 50%,transparent 0,transparent 6%,#000 30%,#000 68%,rgba(0,0,0,.5) 100%);
+ will-change:transform}
+.dx-bg::before{background:conic-gradient(from 0deg at 50% 50%,transparent 0.00deg 2.71deg,rgba(40,110,255,.9) 2.71deg 3.27deg,transparent 3.27deg 6.97deg,rgba(59,155,255,.9) 6.97deg 7.76deg,transparent 7.76deg 10.33deg,rgba(200,242,255,.7) 10.33deg 10.85deg,transparent 10.85deg 15.98deg,rgba(150,230,255,.8) 15.98deg 16.17deg,transparent 16.17deg 18.57deg,rgba(90,215,255,.95) 18.57deg 19.11deg,transparent 19.11deg 23.41deg,rgba(40,110,255,.9) 23.41deg 23.84deg,transparent 23.84deg 28.39deg,rgba(59,155,255,.9) 28.39deg 28.99deg,transparent 28.99deg 33.40deg,rgba(90,215,255,.95) 33.40deg 34.17deg,transparent 34.17deg 36.22deg,rgba(59,155,255,.9) 36.22deg 36.49deg,transparent 36.49deg 40.81deg,rgba(150,230,255,.8) 40.81deg 41.54deg,transparent 41.54deg 45.19deg,rgba(200,242,255,.7) 45.19deg 45.96deg,transparent 45.96deg 48.74deg,rgba(90,215,255,.95) 48.74deg 49.09deg,transparent 49.09deg 53.68deg,rgba(150,230,255,.8) 53.68deg 54.15deg,transparent 54.15deg 57.66deg,rgba(90,215,255,.95) 57.66deg 58.21deg,transparent 58.21deg 62.98deg,rgba(59,155,255,.9) 62.98deg 63.35deg,transparent 63.35deg 67.30deg,rgba(200,242,255,.7) 67.30deg 67.45deg,transparent 67.45deg 72.47deg,rgba(150,230,255,.8) 72.47deg 72.90deg,transparent 72.90deg 76.32deg,rgba(90,215,255,.95) 76.32deg 77.19deg,transparent 77.19deg 79.89deg,rgba(90,215,255,.95) 79.89deg 80.73deg,transparent 80.73deg 84.50deg,rgba(40,110,255,.9) 84.50deg 85.39deg,transparent 85.39deg 88.95deg,rgba(59,155,255,.9) 88.95deg 89.51deg,transparent 89.51deg 94.58deg,rgba(90,215,255,.95) 94.58deg 94.91deg,transparent 94.91deg 98.02deg,rgba(40,110,255,.9) 98.02deg 98.15deg,transparent 98.15deg 103.14deg,rgba(59,155,255,.9) 103.14deg 103.35deg,transparent 103.35deg 108.12deg,rgba(40,110,255,.9) 108.12deg 108.25deg,transparent 108.25deg 113.39deg,rgba(200,242,255,.7) 113.39deg 113.65deg,transparent 113.65deg 116.24deg,rgba(59,155,255,.9) 116.24deg 116.76deg,transparent 116.76deg 120.32deg,rgba(40,110,255,.9) 120.32deg 120.74deg,transparent 120.74deg 124.31deg,rgba(150,230,255,.8) 124.31deg 124.59deg,transparent 124.59deg 130.02deg,rgba(200,242,255,.7) 130.02deg 130.90deg,transparent 130.90deg 133.98deg,rgba(59,155,255,.9) 133.98deg 134.79deg,transparent 134.79deg 137.38deg,rgba(200,242,255,.7) 137.38deg 138.27deg,transparent 138.27deg 142.77deg,rgba(59,155,255,.9) 142.77deg 142.97deg,transparent 142.97deg 145.66deg,rgba(200,242,255,.7) 145.66deg 145.99deg,transparent 145.99deg 149.17deg,rgba(90,215,255,.95) 149.17deg 149.52deg,transparent 149.52deg 151.63deg,rgba(59,155,255,.9) 151.63deg 151.91deg,transparent 151.91deg 153.78deg,rgba(200,242,255,.7) 153.78deg 154.19deg,transparent 154.19deg 157.89deg,rgba(40,110,255,.9) 157.89deg 158.76deg,transparent 158.76deg 164.05deg,rgba(40,110,255,.9) 164.05deg 164.28deg,transparent 164.28deg 166.85deg,rgba(59,155,255,.9) 166.85deg 167.09deg,transparent 167.09deg 172.32deg,rgba(59,155,255,.9) 172.32deg 172.64deg,transparent 172.64deg 175.10deg,rgba(200,242,255,.7) 175.10deg 175.71deg,transparent 175.71deg 178.34deg,rgba(40,110,255,.9) 178.34deg 179.20deg,transparent 179.20deg 183.53deg,rgba(90,215,255,.95) 183.53deg 183.98deg,transparent 183.98deg 186.24deg,rgba(150,230,255,.8) 186.24deg 186.76deg,transparent 186.76deg 189.56deg,rgba(150,230,255,.8) 189.56deg 190.23deg,transparent 190.23deg 193.80deg,rgba(40,110,255,.9) 193.80deg 194.62deg,transparent 194.62deg 197.66deg,rgba(90,215,255,.95) 197.66deg 197.91deg,transparent 197.91deg 200.24deg,rgba(200,242,255,.7) 200.24deg 200.74deg,transparent 200.74deg 205.12deg,rgba(59,155,255,.9) 205.12deg 205.46deg,transparent 205.46deg 210.40deg,rgba(40,110,255,.9) 210.40deg 210.58deg,transparent 210.58deg 214.25deg,rgba(59,155,255,.9) 214.25deg 214.42deg,transparent 214.42deg 217.40deg,rgba(59,155,255,.9) 217.40deg 217.93deg,transparent 217.93deg 220.12deg,rgba(40,110,255,.9) 220.12deg 220.35deg,transparent 220.35deg 226.27deg,rgba(200,242,255,.7) 226.27deg 226.90deg,transparent 226.90deg 231.15deg,rgba(90,215,255,.95) 231.15deg 231.38deg,transparent 231.38deg 237.06deg,rgba(150,230,255,.8) 237.06deg 237.55deg,transparent 237.55deg 242.30deg,rgba(90,215,255,.95) 242.30deg 243.17deg,transparent 243.17deg 247.48deg,rgba(90,215,255,.95) 247.48deg 247.66deg,transparent 247.66deg 252.53deg,rgba(90,215,255,.95) 252.53deg 252.90deg,transparent 252.90deg 255.01deg,rgba(90,215,255,.95) 255.01deg 255.56deg,transparent 255.56deg 261.14deg,rgba(59,155,255,.9) 261.14deg 261.84deg,transparent 261.84deg 266.97deg,rgba(150,230,255,.8) 266.97deg 267.80deg,transparent 267.80deg 269.96deg,rgba(90,215,255,.95) 269.96deg 270.45deg,transparent 270.45deg 275.90deg,rgba(90,215,255,.95) 275.90deg 276.35deg,transparent 276.35deg 281.78deg,rgba(200,242,255,.7) 281.78deg 282.34deg,transparent 282.34deg 286.93deg,rgba(90,215,255,.95) 286.93deg 287.34deg,transparent 287.34deg 291.70deg,rgba(90,215,255,.95) 291.70deg 291.88deg,transparent 291.88deg 297.85deg,rgba(150,230,255,.8) 297.85deg 298.66deg,transparent 298.66deg 302.09deg,rgba(200,242,255,.7) 302.09deg 302.78deg,transparent 302.78deg 306.51deg,rgba(200,242,255,.7) 306.51deg 306.99deg,transparent 306.99deg 309.14deg,rgba(90,215,255,.95) 309.14deg 309.84deg,transparent 309.84deg 312.95deg,rgba(90,215,255,.95) 312.95deg 313.14deg,transparent 313.14deg 315.90deg,rgba(40,110,255,.9) 315.90deg 316.57deg,transparent 316.57deg 321.64deg,rgba(40,110,255,.9) 321.64deg 322.28deg,transparent 322.28deg 325.15deg,rgba(150,230,255,.8) 325.15deg 325.28deg,transparent 325.28deg 327.68deg,rgba(200,242,255,.7) 327.68deg 328.28deg,transparent 328.28deg 330.79deg,rgba(40,110,255,.9) 330.79deg 331.62deg,transparent 331.62deg 335.51deg,rgba(40,110,255,.9) 335.51deg 335.82deg,transparent 335.82deg 340.42deg,rgba(40,110,255,.9) 340.42deg 340.69deg,transparent 340.69deg 345.87deg,rgba(59,155,255,.9) 345.87deg 346.58deg,transparent 346.58deg 352.07deg,rgba(200,242,255,.7) 352.07deg 352.49deg,transparent 352.49deg 360deg);opacity:var(--sl);animation:dxdrift 80s ease-in-out infinite alternate}
+.dx-bg::after{background:conic-gradient(from 0deg at 50% 50%,transparent 0.00deg 8.40deg,rgba(255,214,70,.9) 8.40deg 8.72deg,transparent 8.72deg 44.16deg,rgba(255,120,30,.85) 44.16deg 44.88deg,transparent 44.88deg 58.67deg,rgba(255,170,40,.95) 58.67deg 59.46deg,transparent 59.46deg 74.62deg,rgba(255,170,40,.95) 74.62deg 75.13deg,transparent 75.13deg 110.39deg,rgba(255,120,30,.85) 110.39deg 110.85deg,transparent 110.85deg 136.68deg,rgba(255,120,30,.85) 136.68deg 137.11deg,transparent 137.11deg 161.78deg,rgba(255,170,40,.95) 161.78deg 162.07deg,transparent 162.07deg 181.85deg,rgba(255,120,30,.85) 181.85deg 182.44deg,transparent 182.44deg 214.28deg,rgba(255,214,70,.9) 214.28deg 214.84deg,transparent 214.84deg 245.02deg,rgba(255,120,30,.85) 245.02deg 245.58deg,transparent 245.58deg 360deg);opacity:var(--or);animation:dxdrift 110s ease-in-out infinite alternate-reverse}
+@keyframes dxdrift{from{transform:translate3d(-1.2%,-.8%,0) scale(1)}to{transform:translate3d(1.2%,.8%,0) scale(1.035)}}
+@media(max-width:700px){.dx-bg::before{opacity:calc(var(--sl)*.7);animation:none}.dx-bg::after{opacity:calc(var(--or)*.7);animation:none}}
+@media(prefers-reduced-motion:reduce){.dx-bg::before,.dx-bg::after{animation:none}}
+/* rail: labels never clip */
+.dx .rail a{min-width:0;white-space:nowrap}
+/* internship: companion has its own in-flow slot in the story column */
+.dx .story{column-gap:clamp(2rem,5vw,4rem)}
+.dx .story-lead{display:flow-root}
+.dx .story-companion{margin-top:clamp(1.25rem,3vw,2rem);padding-top:1.25rem;border-top:1px dashed var(--border);max-width:100%}
+.dx .story-companion .dx-pal{margin:0}
+.dx .story-lead .dx-xp{margin-bottom:0}
 </style>
 <script id="pokedex-v5-js">
 (() => {
@@ -3948,6 +3957,11 @@ html body.dx{--display:'Lilita One','Nunito',system-ui,sans-serif;--mono:'Silksc
 (() => {const r=document.querySelector('.rail');if(!r)return;
  new MutationObserver(()=>{if(r.scrollWidth<=r.clientWidth)return;const a=r.querySelector('a.on');
   if(a)r.scrollTo({left:a.offsetLeft-(r.clientWidth-a.offsetWidth)/2,behavior:'auto'});}).observe(r,{subtree:true,attributes:true,attributeFilter:['class']});})();
+</script>
+<script id="pokedex-v7-js">
+/* wrap the internship companion in its own in-flow slot */
+(() => {const f=document.querySelector('.story-lead .dx-pal');if(!f||f.parentElement.classList.contains('story-companion'))return;
+ const w=document.createElement('div');w.className='story-companion';f.before(w);w.append(f);})();
 </script>
 </body>
 </html>
